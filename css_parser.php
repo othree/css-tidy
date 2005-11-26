@@ -283,7 +283,7 @@ function csstidy()
 	$this->settings['uppercase_properties'] = false;
 	$this->settings['sort_properties'] = false;
 	$this->settings['sort_selectors'] = false;
-	$this->settings['merge_selectors'] = true;
+	$this->settings['merge_selectors'] = 2;
 	$this->settings['discard_invalid_properties'] = false;
 	$this->settings['save_comments'] = false;
 	$this->settings['css_level'] = 'CSS2.1';
@@ -1302,7 +1302,7 @@ function print_code($css = NULL,$plain = false)
 	{
 		$css = $this->css;
 	}
-	
+	var_export($this->comments);die();
 	if($plain === true)
 	{
 		$this->template = array_map("strip_tags", $this->template);
