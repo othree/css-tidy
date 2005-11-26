@@ -68,7 +68,7 @@ if(isset($_REQUEST['lowercase'])) $css->set_cfg('lowercase_s',TRUE);
 if(!isset($_REQUEST['compress_c']) && isset($_REQUEST['post'])) $css->set_cfg('compress_colors',FALSE);
 if(!isset($_REQUEST['compress_fw']) && isset($_REQUEST['post'])) $css->set_cfg('compress_font-weight',FALSE);
 if(!isset($_REQUEST['merge_selectors'])) {
-    $css->set_cfg('merge_selectors', 1);
+    $css->set_cfg('merge_selectors', 2);
 } else {
     $css->set_cfg('merge_selectors', $_REQUEST['merge_selectors']);
 }

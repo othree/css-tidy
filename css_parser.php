@@ -742,6 +742,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 			}
 			elseif($string{$i} == '}')
 			{
+                $this->explode_selectors();
 				$this->status = 'is';
 				$this->invalid_at = false;
 				if($this->selector{0} != '@' && !$this->added)
@@ -749,7 +750,6 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 					$this->log('Removed empty selector: '.trim($this->selector),'Information');
 				}
 				$this->selector = '';
-				$this->sel_seperate = array();
 				$this->property = '';
 			}
 			elseif($string{$i} == ';')
@@ -895,29 +895,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 						$this->log('Invalid property in '.strtoupper($this->get_cfg('css_level')).': '.$this->property,'Warning');
 					}
 				}
-				
-				// Explode multiple selectors
-				if($this->get_cfg('merge_selectors') == 1 || $this->get_cfg('merge_selectors') == 3)
-				{
-					$new_sels = array();
-					$lastpos = 0;
-					$this->sel_seperate[] = strlen($this->selector);
-					foreach($this->sel_seperate as $pos)
-					{
-                        $new_sels[] = substr($this->selector,$lastpos,$pos-1);
-                        $lastpos = $pos;
-					}
-
-					if(count($new_sels) > 1)
-					{
-						foreach($new_sels as $selector)
-						{
-							$this->merge_css_blocks($this->at,$selector,$this->css[$this->at][$this->selector]);
-						}
-						unset($this->css[$this->at][$this->selector]);
-					}
-				}
-							
+									
 				$this->property = '';
 				$this->sub_value_arr = array();
 				$this->value = '';
@@ -929,6 +907,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 			}
 			if($string{$i} == '}')
 			{
+                $this->explode_selectors();
 				$this->status = 'is';
 				if($this->selector{0} != '@' && !$this->added)
 				{
@@ -936,7 +915,6 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 				}
 				$this->invalid_at = false;
 				$this->selector = '';
-				$this->sel_seperate = array();
 			}	
 		}
 		elseif(!$pn)
@@ -1022,6 +1000,41 @@ if($this->get_cfg('optimise_shorthands'))
 	}
 }
 return (empty($this->css) && empty($this->import) && empty($this->charset) && empty($this->namespace)) ? false : true;
+}
+
+/**
+ * Explodes selectors
+ * @access private
+ * @version 1.0
+ */
+function explode_selectors()
+{
+    // Explode multiple selectors
+    if($this->get_cfg('merge_selectors') == 1 || $this->get_cfg('merge_selectors') == 3)
+    {
+        $new_sels = array();
+        $lastpos = 0;
+        $this->sel_seperate[] = strlen($this->selector);
+        foreach($this->sel_seperate as $num => $pos)
+        {
+            if($num == count($this->sel_seperate)-1) {
+                $pos += 1;
+            }
+            
+            $new_sels[] = substr($this->selector,$lastpos,$pos-$lastpos-1);
+            $lastpos = $pos;
+        }
+ 
+        if(count($new_sels) > 1)
+        {
+            foreach($new_sels as $selector)
+            {
+                $this->merge_css_blocks($this->at,$selector,$this->css[$this->at][$this->selector]);
+            }
+            unset($this->css[$this->at][$this->selector]);
+        }
+    }
+    $this->sel_seperate = array();
 }
 
 /**
@@ -1162,25 +1175,26 @@ function merge_css_blocks($media,$selector,$css_add)
  */
 function merge_selectors(&$array)
 {
-	foreach($array as $key => $value)
+    $css = $array;
+	foreach($css as $key => $value)
 	{
-		if(!isset($array[$key]))
+		if(!isset($css[$key]))
 		{
 			continue;
 		}
-		
 		$newsel = '';
 		
 		// Check if properties also exist in another selector
 		$keys = array();
-		foreach($array as $selector => $vali)
+		// PHP bug (?) without $css = $array; here
+		foreach($css as $selector => $vali)
 		{
 			if($selector == $key)
 			{
 				continue;
 			}
 			
-			if($array[$key] === $vali)
+			if($css[$key] === $vali)
 			{
 				$keys[] = $selector;
 			}
@@ -1189,15 +1203,16 @@ function merge_selectors(&$array)
 		if(!empty($keys))
 		{
 			$newsel = $key;
-			unset($array[$key]);
+			unset($css[$key]);
 			foreach($keys as $selector)
 			{
-				unset($array[$selector]);
+				unset($css[$selector]);
 				$newsel .= ','.$selector;
 			}
-			$array[$newsel] = $value;
+			$css[$newsel] = $value;
 		}
 	}
+	$array = $css;
 }
 
 
