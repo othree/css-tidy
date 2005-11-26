@@ -1302,7 +1302,7 @@ function print_code($css = NULL,$plain = false)
 	{
 		$css = $this->css;
 	}
-	var_export($this->comments);die();
+
 	if($plain === true)
 	{
 		$this->template = array_map("strip_tags", $this->template);
