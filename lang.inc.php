@@ -1,14 +1,14 @@
 <?php
 if(isset($_GET['lang']))
 {
-	$language = $_GET['lang'];
+	$l = $_GET['lang'];
 }
 else
 {
-	$language = getenv('HTTP_ACCEPT_LANGUAGE');
-	$language = strtolower(substr($language,0,2));
+	$l = getenv('HTTP_ACCEPT_LANGUAGE');
+	$l = strtolower(substr($l,0,2));
 }
-$language = ($language == 'de' || $language == 'fr') ? $language : 'en';
+$l = ($l == 'de' || $l == 'fr') ? $l : 'en';
 
 $lang = array();
 $lang['en'][0] = 'CSS Formatter and Optimiser/Optimizer (based on CSSTidy ';
@@ -55,8 +55,8 @@ $lang['en'][20] = 'Sort Selectors (caution)';
 $lang['de'][20] = 'Selektoren sortieren (Vorsicht)';     
 $lang['en'][21] = 'Sort Properties';
 $lang['de'][21] = 'Eigenschaften sortieren';      
-$lang['en'][22] = 'Merge selectors with same properties';
-$lang['de'][22] = 'Selektoren mit gleichen Eigenschaften zusammenfassen';        
+$lang['en'][22] = 'Optimise selectors and their properties';
+$lang['de'][22] = 'Selektoren und Eigenschaften optimieren';        
 $lang['en'][23] = 'Merge shorthand properties';
 $lang['de'][23] = 'Eigenschaften zusammenfassen (margin,...)';     
 $lang['en'][24] = 'Compress colors';
@@ -103,7 +103,14 @@ $lang['en'][45] = 'Compress font-weight';
 $lang['de'][45] = 'font-weight komprimieren';
 $lang['en'][46] = 'Save comments';
 $lang['de'][46] = 'Kommentare beibehalten';
-
+$lang['en'][47] = 'Do not change anything';
+$lang['en'][48] = 'Only seperate selectors (split at ,)';
+$lang['en'][49] = 'Merge selectors with the same properties (fast)';
+$lang['en'][50] = 'Merge selectors intelligently (slow)';
+$lang['de'][47] = 'Nichts ändern';
+$lang['de'][48] = 'Selektoren nur trennen (am Komma)';
+$lang['de'][49] = 'Selektoren mit gleichen Eigenschaften zusammenfassen (schnell)';
+$lang['de'][50] = 'Selektoren intelligent zusammenfassen (langsam!)';
 
 $lang['fr'][0] = 'CSS Formatteur et Optimiseur (basé sur CSSTidy  ';
 $lang['fr'][1] = 'CSS Formatteur et Optimiseur';
@@ -151,4 +158,8 @@ $lang['fr'][43] = 'Supprimer les propriétés non valide';
 $lang['fr'][44] = 'Seulement les optimisations sûres';
 $lang['fr'][45] = 'Compresser font-weight';
 $lang['fr'][46] = 'Sauvegarder les commentaires ';
+$lang['fr'][47] = 'Ne changer rien';
+$lang['fr'][48] = 'Sépare les sélecteurs (sépare au niveau de ,)';
+$lang['fr'][49] = 'Fusionne les sélecteurs avec les mêmes propriétés (rapides)';
+$lang['fr'][50] = 'Fusionne les sélecteurs intelligemment (lent)';
 ?>
