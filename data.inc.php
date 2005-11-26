@@ -26,7 +26,7 @@
 /**
  * All whitespace allowed in CSS
  *
- * @global array $whitespace
+ * @global array $GLOBALS['csstidy']['whitespace']
  * @version 1.0
  */
 $GLOBALS['csstidy']['whitespace'] = array(' ',"\n","\t","\r","\x0B");
@@ -34,7 +34,7 @@ $GLOBALS['csstidy']['whitespace'] = array(' ',"\n","\t","\r","\x0B");
 /**
  * All CSS tokens used by csstidy
  *
- * @global array $tokens
+ * @global array $GLOBALS['csstidy']['tokens']
  * @version 1.0
  */
 $GLOBALS['csstidy']['tokens'] = array('/','@','}','{',';',':','=','\'','"','(',',','\\','!','$','%','&',')','*','+','.','<','>','?','[',']','^','`','|','~');
@@ -43,7 +43,7 @@ $GLOBALS['csstidy']['tokens'] = array('/','@','}','{',';',':','=','\'','"','(','
  * All CSS units (CSS 3 units included)
  *
  * @see compress_numbers()
- * @global array $units
+ * @global array $GLOBALS['csstidy']['units']
  * @version 1.0
  */
 $GLOBALS['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%','ex','gd','vw','vh','vm','deg','grad','rad','ms','s','khz','hz');
@@ -51,7 +51,7 @@ $GLOBALS['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%
 /**
  * Available at-rules
  *
- * @global array $at_rules
+ * @global array $GLOBALS['csstidy']['at_rules']
  * @version 1.0
  */
 $GLOBALS['csstidy']['at_rules'] = array('page' => 'is','font-face' => 'is','charset' => 'iv', 'import' => 'iv','namespace' => 'iv','media' => 'at');
@@ -61,7 +61,7 @@ $GLOBALS['csstidy']['at_rules'] = array('page' => 'is','font-face' => 'is','char
  *
  * @todo CSS3 properties
  * @see compress_numbers();
- * @global array $number_values
+ * @global array $GLOBALS['csstidy']['number_values']
  * @version 1.2
  */
 $GLOBALS['csstidy']['number_values'] = array('line-height','pitch-range','richness','speech-rate','stress','volume','font','font-weight','z-index','counter-increment','counter-reset','orphans','widows');
@@ -71,7 +71,7 @@ $GLOBALS['csstidy']['number_values'] = array('line-height','pitch-range','richne
  *
  * @todo CSS3 properties
  * @see compress_numbers();
- * @global array $color_values
+ * @global array $GLOBALS['csstidy']['color_values']
  * @version 1.0
  */
 $GLOBALS['csstidy']['color_values'] = array();
@@ -89,7 +89,7 @@ $GLOBALS['csstidy']['color_values'][] = 'outline-color';
  * Default values for the background properties
  *
  * @todo Possibly property names will change during CSS3 development
- * @global array $background_prop_default
+ * @global array $GLOBALS['csstidy']['background_prop_default']
  * @see dissolve_short_bg()
  * @see merge_bg()
  * @version 1.0
@@ -260,7 +260,7 @@ $GLOBALS['csstidy']['shorthands']['-moz-border-radius'] = 0;
 /**
  * All CSS Properties. Needed for csstidy::property_is_next()
  *
- * @global array $all_properties
+ * @global array $GLOBALS['csstidy']['all_properties']
  * @todo Add CSS3 properties
  * @version 1.0
  * @see csstidy::property_is_next()
