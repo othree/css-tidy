@@ -14,6 +14,7 @@ if($css->css === $xhtml_result) {
 } else {
     echo '<div style="color:red">XHTML failed!</div>';
 }
+flush();
 
 $css_code = file_get_contents('base.css');
 
@@ -24,8 +25,16 @@ if($css->css === $ala_result) {
 } else {
     echo '<div style="color:red">ALA failed!</div>';
 }
+flush();
 
-$css_code = file_get_contents('base.css');
+$css->set_cfg('remove_last_;',true);
+
+if($css->print_code() === $ala_html) {
+    echo '<div style="color:green">ALA HTML OK!</div>';
+} else {
+    echo '<div style="color:red">ALA HTML failed!</div>';
+}
+flush();
 
 $css->set_cfg('optimise_shorthands',false);
 $css->set_cfg('only_safe_optimisations',false);
@@ -39,11 +48,13 @@ if($css->css === $ala_options_result) {
 } else {
     echo '<div style="color:red">ALA +options failed!</div>';
 }
+flush();
 
 if($css->comments === $ala_options_comments) {
     echo '<div style="color:green">ALA comments OK!</div>';
 } else {
     echo '<div style="color:red">ALA comments failed!</div>';
 }
+flush();
 
 ?>

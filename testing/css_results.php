@@ -583,4 +583,413 @@ $ala_options_result =     array (
 );
 
 $ala_options_comments = array ( 'standardtable' => ' handle legacy articles until markup gets a scrubbing ', 'standard#main' => ' IE5.x/Win hacks ', );
+
+$ala_html = '<span class="selector">*</span> <span class="format">{</span>
+<span class="property">margin:</span><span class="value">0</span><span class="format">;</span>
+<span class="property">padding:</span><span class="value">0</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">body</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">0.8125em Verdana, sans-serif</span><span class="format">;</span>
+<span class="property">line-height:</span><span class="value">1</span><span class="format">;</span>
+<span class="property">color:</span><span class="value">#333</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">#FFF</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">a</span> <span class="format">{</span>
+<span class="property">text-decoration:</span><span class="value">none</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">a img</span> <span class="format">{</span>
+<span class="property">border:</span><span class="value">none</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">a:link,a:visited</span> <span class="format">{</span>
+<span class="property">color:</span><span class="value">#555</span><span class="format">;</span>
+<span class="property">border-bottom:</span><span class="value">1px solid #555</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">html body a:hover</span> <span class="format">{</span>
+<span class="property">color:</span><span class="value">#000</span><span class="format">;</span>
+<span class="property">background-color:</span><span class="value">#F4F2E4</span><span class="format">;</span>
+<span class="property">border-bottom:</span><span class="value">1px solid #9A8E51</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">h2</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">1.5em Georgia, &quot;Times New Roman&quot;, serif</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">1px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">h3</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">bold 1em Verdana, Arial, sans-serif</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">2px</span><span class="format">;</span>
+<span class="property">text-transform:</span><span class="value">uppercase</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">h4</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">bold 1.1em Georgia, &quot;Times New Roman&quot;, serif</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">1px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">ul,ol</span> <span class="format">{</span>
+<span class="property">list-style:</span><span class="value">none</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">blockquote,pre</span> <span class="format">{</span>
+<span class="property">padding:</span><span class="value">0.25em 40px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">blockquote</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">italic 1.05em Georgia, Times, serif</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">url(/pix/quote_wh.gif) 10px 0.75em no-repeat</span><span class="format">;</span>
+<span class="property">margin:</span><span class="value">0.25em 0</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">pre,code</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">1.05em Courier, monospace</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">pre</span> <span class="format">{</span>
+<span class="property">line-height:</span><span class="value">1.5em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">pre strong</span> <span class="format">{</span>
+<span class="property">font-size:</span><span class="value">1em</span><span class="format">;</span>
+<span class="property">font-weight:</span><span class="value">700</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">pre code</span> <span class="format">{</span>
+<span class="property">font-size:</span><span class="value">1em</span><span class="format">;</span>
+<span class="property">line-height:</span><span class="value">1.5em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">table</span> <span class="format">{</span>
+<span class="property">border-bottom:</span><span class="value">3px solid #B2B2B2</span><span class="format">;</span>
+<span class="property">margin:</span><span class="value">0 0 2em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">caption</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">1.5em Georgia, Times, serif</span><span class="format">;</span>
+<span class="property">border:</span><span class="value">1px solid #B2B2B2</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">#EEE</span><span class="format">;</span>
+<span class="property">border-width:</span><span class="value">1px 0 2px</span><span class="format">;</span>
+<span class="property">padding:</span><span class="value">0.75em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">th,td</span> <span class="format">{</span>
+<span class="property">border:</span><span class="value">1px solid #CCC</span><span class="format">;</span>
+<span class="property">border-width:</span><span class="value">0 0 1px 1px</span><span class="format">;</span>
+<span class="property">padding:</span><span class="value">0.5em 1em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">th.first,td.first,tbody th</span> <span class="format">{</span>
+<span class="property">border-left:</span><span class="value">none</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">thead th</span> <span class="format">{</span>
+<span class="property">text-transform:</span><span class="value">uppercase</span><span class="format">;</span>
+<span class="property">text-align:</span><span class="value">left</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">tbody th</span> <span class="format">{</span>
+<span class="property">width:</span><span class="value">20%</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">tfoot</span> <span class="format">{</span>
+<span class="property">display:</span><span class="value">none</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#masthead</span> <span class="format">{</span>
+<span class="property">position:</span><span class="value">absolute</span><span class="format">;</span>
+<span class="property">z-index:</span><span class="value">5</span><span class="format">;</span>
+<span class="property">top:</span><span class="value">0</span><span class="format">;</span>
+<span class="property">left:</span><span class="value">22px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#masthead a</span> <span class="format">{</span>
+<span class="property">display:</span><span class="value">block</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">#81817C</span><span class="format">;</span>
+<span class="property">width:</span><span class="value">156px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#masthead a:hover</span> <span class="format">{</span>
+<span class="property">background:</span><span class="value">#000</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#ish</span> <span class="format">{</span>
+<span class="property">position:</span><span class="value">relative</span><span class="format">;</span>
+<span class="property">z-index:</span><span class="value">10</span><span class="format">;</span>
+<span class="property">border-top:</span><span class="value">1px solid #666</span><span class="format">;</span>
+<span class="property">font:</span><span class="value">bold 10px Arial, sans-serif</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">1px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#ish a:link,#ish a:visited</span> <span class="format">{</span>
+<span class="property">position:</span><span class="value">absolute</span><span class="format">;</span>
+<span class="property">top:</span><span class="value">-33px</span><span class="format">;</span>
+<span class="property">left:</span><span class="value">150px</span><span class="format">;</span>
+<span class="property">width:</span><span class="value">65px</span><span class="format">;</span>
+<span class="property">padding-top:</span><span class="value">13px</span><span class="format">;</span>
+<span class="property">text-align:</span><span class="value">center</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">url(/pix/ishbug.gif) top left no-repeat</span><span class="format">;</span>
+<span class="property">color:</span><span class="value">#FFF</span><span class="format">;</span>
+<span class="property">voice-family:</span><span class="value">inherit</span><span class="format">;</span>
+<span class="property">height:</span><span class="value">52px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#ish a:hover</span> <span class="format">{</span>
+<span class="property">background-position:</span><span class="value">bottom right</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#ish a em</span> <span class="format">{</span>
+<span class="property">display:</span><span class="value">block</span><span class="format">;</span>
+<span class="property">margin-top:</span><span class="value">-0.2em</span><span class="format">;</span>
+<span class="property">font:</span><span class="value">2.33em Georgia, Times, serif</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">0</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#navbar</span> <span class="format">{</span>
+<span class="property">height:</span><span class="value">2.4em</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">#FBFAF4</span><span class="format">;</span>
+<span class="property">border-top:</span><span class="value">5px solid #333</span><span class="format">;</span>
+<span class="property">font:</span><span class="value">18px Georgia, Times, serif</span><span class="format">;</span>
+<span class="property">overflow:</span><span class="value">hidden</span><span class="format">;</span>
+<span class="property">min-width:</span><span class="value">750px</span><span class="format">;</span>
+<span class="property">padding:</span><span class="value">0 0 0 215px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#navbar li</span> <span class="format">{</span>
+<span class="property">float:</span><span class="value">left</span><span class="format">;</span>
+<span class="property">margin-right:</span><span class="value">5px</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">url(/pix/diamond-black.gif) 100% 66% no-repeat</span><span class="format">;</span>
+<span class="property">padding:</span><span class="value">0 23px 0 13px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#navbar li a</span> <span class="format">{</span>
+<span class="property">display:</span><span class="value">block</span><span class="format">;</span>
+<span class="property">text-transform:</span><span class="value">uppercase</span><span class="format">;</span>
+<span class="property">color:</span><span class="value">#000</span><span class="format">;</span>
+<span class="property">padding:</span><span class="value">0.75em 0 0.25em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#navbar #feed</span> <span class="format">{</span>
+<span class="property">background:</span><span class="value">none</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#navbar a:hover,.articles #navbar #articles a,.topics #navbar #topics a,.about #navbar #about a,.contact #navbar #contact a,.contribute #navbar #contribute a,.feed #navbar #feed a</span> <span class="format">{</span>
+<span class="property">background:</span><span class="value">url(/pix/navbarlinkbg.gif) top left repeat-x</span><span class="format">;</span>
+<span class="property">color:</span><span class="value">#555</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#main</span> <span class="format">{</span>
+<span class="property">float:</span><span class="value">left</span><span class="format">;</span>
+<span class="property">font-size:</span><span class="value">0.88em</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">url(/pix/threecolbg.gif) 794px 0 repeat-y</span><span class="format">;</span>
+<span class="property">voice-family:</span><span class="value">inherit</span><span class="format">;</span>
+<span class="property">width:</span><span class="value">750px</span><span class="format">;</span>
+<span class="property">padding:</span><span class="value">1.5em 0 1.5em 210px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#main p</span> <span class="format">{</span>
+<span class="property">text-align:</span><span class="value">left</span><span class="format">;</span>
+<span class="property">line-height:</span><span class="value">1.8em</span><span class="format">;</span>
+<span class="property">margin:</span><span class="value">0 0 1em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">.column</span> <span class="format">{</span>
+<span class="property">float:</span><span class="value">left</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#content</span> <span class="format">{</span>
+<span class="property">voice-family:</span><span class="value">inherit</span><span class="format">;</span>
+<span class="property">width:</span><span class="value">540px</span><span class="format">;</span>
+<span class="property">padding:</span><span class="value">0 25px 0 20px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#content .title</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">1.8em Georgia, Times, serif</span><span class="format">;</span>
+<span class="property">margin-bottom:</span><span class="value">0.5em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">.title</span> <span class="format">{</span>
+<span class="property">text-transform:</span><span class="value">none</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">1px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">.title a:link,.title a:visited</span> <span class="format">{</span>
+<span class="property">color:</span><span class="value">#333</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">.title a:hover</span> <span class="format">{</span>
+<span class="property">color:</span><span class="value">#000</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">.byline</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">italic 1.1em Times, serif</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">1px</span><span class="format">;</span>
+<span class="property">margin:</span><span class="value">0 0 1.5em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">.byline a:link,.byline a:visited</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">bold 0.85em Verdana, sans-serif</span><span class="format">;</span>
+<span class="property">text-transform:</span><span class="value">uppercase</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">2px</span><span class="format">;</span>
+<span class="property">margin-left:</span><span class="value">0.25em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#secondary</span> <span class="format">{</span>
+<span class="property">width:</span><span class="value">215px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#secondary .title</span> <span class="format">{</span>
+<span class="property">margin-bottom:</span><span class="value">0.25em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#choice</span> <span class="format">{</span>
+<span class="property">border-top:</span><span class="value">1px solid #D9D9D9</span><span class="format">;</span>
+<span class="property">padding:</span><span class="value">1.5em 20px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#choice h3</span> <span class="format">{</span>
+<span class="property">color:</span><span class="value">#333</span><span class="format">;</span>
+<span class="property">font:</span><span class="value">0.9em Verdana, sans-serif</span><span class="format">;</span>
+<span class="property">text-transform:</span><span class="value">uppercase</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">0.33em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#choice .info</span> <span class="format">{</span>
+<span class="property">font-style:</span><span class="value">italic</span><span class="format">;</span>
+<span class="property">font-size:</span><span class="value">0.9em</span><span class="format">;</span>
+<span class="property">color:</span><span class="value">#666</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#sidebar</span> <span class="format">{</span>
+<span class="property">padding-left:</span><span class="value">15px</span><span class="format">;</span>
+<span class="property">voice-family:</span><span class="value">inherit</span><span class="format">;</span>
+<span class="property">width:</span><span class="value">140px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#sidebar h3</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">1.5em Georgia, Times, serif</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">0</span><span class="format">;</span>
+<span class="property">text-transform:</span><span class="value">none</span><span class="format">;</span>
+<span class="property">margin-bottom:</span><span class="value">0.25em</span><span class="format">;</span>
+<span class="property">color:</span><span class="value">#333</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#search</span> <span class="format">{</span>
+<span class="property">width:</span><span class="value">80px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#search,#submit</span> <span class="format">{</span>
+<span class="property">vertical-align:</span><span class="value">bottom</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#sidebar div</span> <span class="format">{</span>
+<span class="property">border-bottom:</span><span class="value">1px dashed #B2B2B2</span><span class="format">;</span>
+<span class="property">padding:</span><span class="value">10px 0.5em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#sidebar div.first</span> <span class="format">{</span>
+<span class="property">padding-top:</span><span class="value">0</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#sidebar li</span> <span class="format">{</span>
+<span class="property">padding:</span><span class="value">0.5em 0</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#sidebar li a:link,#sidebar li a:visited</span> <span class="format">{</span>
+<span class="property">padding-left:</span><span class="value">12px</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">url(/pix/diamond-gray.gif) 0 0.4em no-repeat</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#sidebar p</span> <span class="format">{</span>
+<span class="property">font-size:</span><span class="value">0.85em</span><span class="format">;</span>
+<span class="property">margin-top:</span><span class="value">0.25em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#lucre,#lucre p</span> <span class="format">{</span>
+<span class="property">margin:</span><span class="value">0.5em 0 0</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#lucre p</span> <span class="format">{</span>
+<span class="property">text-align:</span><span class="value">center</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#lucre p.ads</span> <span class="format">{</span>
+<span class="property">text-align:</span><span class="value">left</span><span class="format">;</span>
+<span class="property">line-height:</span><span class="value">1.5</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#lucre p a:link,#lucre p a:visited</span> <span class="format">{</span>
+<span class="property">color:</span><span class="value">#666</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#lucre p a:hover</span> <span class="format">{</span>
+<span class="property">color:</span><span class="value">#000</span><span class="format">;</span>
+<span class="property">border-bottom-width:</span><span class="value">1px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#colophon p</span> <span class="format">{</span>
+<span class="property">text-transform:</span><span class="value">uppercase</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">0.25em</span><span class="format">;</span>
+<span class="property">text-align:</span><span class="value">right</span><span class="format">;</span>
+<span class="property">width:</span><span class="value">121px</span><span class="format">;</span>
+<span class="property">color:</span><span class="value">#666</span><span class="format">;</span>
+<span class="property">margin:</span><span class="value">0 auto</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#colophon img</span> <span class="format">{</span>
+<span class="property">background:</span><span class="value">#333</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#colophon a:hover img</span> <span class="format">{</span>
+<span class="property">background:</span><span class="value">#555</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#footer</span> <span class="format">{</span>
+<span class="property">clear:</span><span class="value">both</span><span class="format">;</span>
+<span class="property">border:</span><span class="value">1px solid #666</span><span class="format">;</span>
+<span class="property">margin-bottom:</span><span class="value">3em</span><span class="format">;</span>
+<span class="property">font-size:</span><span class="value">0.85em</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">#FBFAF4 url(/pix/pixelstoprose.gif) 20px 50% no-repeat</span><span class="format">;</span>
+<span class="property">border-width:</span><span class="value">1px 0</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#footer p</span> <span class="format">{</span>
+<span class="property">margin-left:</span><span class="value">200px</span><span class="format">;</span>
+<span class="property">border-left:</span><span class="value">1px solid #666</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">#FFF</span><span class="format">;</span>
+<span class="property">padding:</span><span class="value">1em 20px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#footer .copyright</span> <span class="format">{</span>
+<span class="property">padding-left:</span><span class="value">25px</span><span class="format">;</span>
+<span class="property">background:</span><span class="value">url(/pix/diamond-gray.gif) 10px 50% no-repeat</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#search,input[type=&quot;text&quot;],input[type=&quot;password&quot;],textarea</span> <span class="format">{</span>
+<span class="property">background:</span><span class="value">#FBFAF4</span><span class="format">;</span>
+<span class="property">border:</span><span class="value">2px solid</span><span class="format">;</span>
+<span class="property">border-color:</span><span class="value">#999 #D9D9D9 #D9D9D9 #999</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#masthead a,#ish a,#navbar a,#banners a,a.button,#main h1 a,.title a:link,.title a:visited,.byline a:link,.byline a:visited,#sidebar #colophon,#topiclist a,#lucre a,#colophon a,#footer a:link,#footer a:visited</span> <span class="format">{</span>
+<span class="property">border-bottom-width:</span><span class="value">0</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#main h1 a:hover,.title a:hover,.byline a:hover,#footer a:hover</span> <span class="format">{</span>
+<span class="property">border-bottom-width:</span><span class="value">1px</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#content .ishinfo,.issn</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">0.9em Verdana, sans-serif</span><span class="format">;</span>
+<span class="property">text-transform:</span><span class="value">uppercase</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">0.33em</span><span class="format"></span>
+<span class="format">}</span>
+
+<span class="selector">#content .ishinfo b,.issn b</span> <span class="format">{</span>
+<span class="property">font:</span><span class="value">1.2em Georgia, Times, serif</span><span class="format">;</span>
+<span class="property">letter-spacing:</span><span class="value">1px</span><span class="format"></span>
+<span class="format">}</span>';
 ?>

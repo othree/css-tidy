@@ -1300,29 +1300,31 @@ function print_code($css = NULL,$plain = false)
 	$output = '';
 	if($css === NULL)
 	{
-		$css = $this->css;
+		$css =& $this->css;
 	}
+	
+	$template = $this->template;
 
-	if($plain === true)
+	if($plain)
 	{
-		$this->template = array_map("strip_tags", $this->template);
+		$template = array_map("strip_tags", $template);
 	}
 	
 	if(!empty($this->charset))
 	{
-		$output .= $this->template[0].'@charset '.$this->template[5].$this->charset.$this->template[6].$this->template[12];
+		$output .= $template[0].'@charset '.$template[5].$this->charset.$template[6].$template[12];
 	}
 	
 	if(!empty($this->import))
 	{
 		for ($i = 0, $size = count($this->import); $i < $size; $i ++) {
-			$output .= $this->template[0].'@import '.$this->template[5].$this->import[$i].$this->template[6].$this->template[12];
+			$output .= $template[0].'@import '.$template[5].$this->import[$i].$template[6].$template[12];
 		}
 	}
 	
 	if(!empty($this->namespace))
 	{
-		$output .= $this->template[0].'@namespace '.$this->template[5].$this->namespace.$this->template[6].$this->template[12];
+		$output .= $template[0].'@namespace '.$template[5].$this->namespace.$template[6].$template[12];
 	}
 	
 	ksort($css);
@@ -1331,7 +1333,7 @@ function print_code($css = NULL,$plain = false)
 	{
 		if ($medium !== 'standard')
 		{
-			$output .= $this->template[0].csstidy::htmlsp($medium,$plain).$this->template[1];
+			$output .= $template[0].csstidy::htmlsp($medium,$plain).$template[1];
 		}
 		
 		if ($this->get_cfg('sort_selectors')) ksort($val);
@@ -1340,31 +1342,31 @@ function print_code($css = NULL,$plain = false)
 		{
 			if ($this->get_cfg('sort_properties')) ksort($vali);
 			
-			if ($medium !== 'standard') $output .= $this->template[10];
+			if ($medium !== 'standard') $output .= $template[10];
 			
 			if(isset($this->comments[$medium.$selector]))
 			{
-				$output .= $this->template[13].'/*'.$this->comments[$medium.$selector].'*/'.$this->template[14];
+				$output .= $template[13].'/*'.$this->comments[$medium.$selector].'*/'.$template[14];
 			}
-			$output .= ($selector{0} !== '@') ? $this->template[2].csstidy::htmlsp($selector,$plain) : $this->template[0].csstidy::htmlsp($selector,$plain);
-			$output .= ($medium !== 'standard') ? $this->template[11] : $this->template[3];
+			$output .= ($selector{0} !== '@') ? $template[2].csstidy::htmlsp($selector,$plain) : $template[0].csstidy::htmlsp($selector,$plain);
+			$output .= ($medium !== 'standard') ? $template[11] : $template[3];
 			
 			$i = 0; foreach($vali as $property => $valj)
 			{
 				$i++;
-				if ($medium !== 'standard') $output .= $this->template[10];
+				if ($medium !== 'standard') $output .= $template[10];
 				
-				$output .= $this->template[4];
+				$output .= $template[4];
 				$output .= ($this->get_cfg('uppercase_properties')) ? csstidy::htmlsp(strtoupper($property),$plain) : csstidy::htmlsp($property,$plain);
-				$output .= ':'.$this->template[5].csstidy::htmlsp($valj,$plain);
-				$output .= ($this->get_cfg('remove_last_;') && $i === count($vali)) ? str_replace(';','',$this->template[6]) : $this->template[6];
+				$output .= ':'.$template[5].csstidy::htmlsp($valj,$plain);
+				$output .= ($this->get_cfg('remove_last_;') && $i === count($vali)) ? str_replace(';','',$template[6]) : $template[6];
 			}
 			
-			if ($medium !== 'standard') $output .= $this->template[10];
-			$output .= $this->template[7];
-			if (( end($val) !== $vali && $medium !== 'standard') || $medium === 'standard') $output .= $this->template[8];
+			if ($medium !== 'standard') $output .= $template[10];
+			$output .= $template[7];
+			if (( end($val) !== $vali && $medium !== 'standard') || $medium === 'standard') $output .= $template[8];
 		}
-		if ($medium != 'standard') $output .= $this->template[9];
+		if ($medium != 'standard') $output .= $template[9];
 	}
 
 	$output = trim($output);
