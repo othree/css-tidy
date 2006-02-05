@@ -22,9 +22,42 @@ using namespace std;
 
 extern vector<string> raw_template,html_template;
 
-void print_css(css_manage &css, string filename)
+void csstidy::_convert_raw_css()
 {
-	if(css.css.empty() && css.charset == "" && css.namesp == "" && css.import.empty())
+	vector<token> newtokens;
+	
+	css.sort();
+        
+    for (css_struct::iterator i = css.begin(); i != css.end(); ++i)
+    {
+        if (settings["sort_selectors"]) i->second.sort();
+        if (i->first != "standard") {
+            add_token(AT_START, i->first, true);
+        }
+        
+        for(sstore::iterator j = i->second.begin(); j != i->second.end(); ++j)
+        {
+            if (settings["sort_properties"]) j->second.sort();
+            add_token(SEL_START, j->first, true);
+            
+            for(umap<string,string>::iterator k = j->second.begin(); k != j->second.end(); ++k)
+            {
+                add_token(PROPERTY, k->first, true);
+                add_token(VALUE, k->second, true);
+            }
+            
+            add_token(SEL_END, j->first, true);
+        }
+        
+        if (i->first != "standard") {
+            add_token(AT_END, i->first, true);
+        }
+    }
+}
+
+void csstidy::print_css(string filename)
+{
+	if(css.empty() && charset == "" && namesp == "" && import.empty())
 	{
 		if(!settings["silent"]) cout << "Invalid CSS!" << endl;
 		return;
@@ -40,30 +73,34 @@ void print_css(css_manage &css, string filename)
 			return;
 		}
 	}
+	
+	if(!settings["preserve_css"]) {
+		_convert_raw_css();
+	}
 
 	stringstream out;
 	
-	css.css.sort();
+	css.sort();
 
-	if(css.charset != "")
+	if(charset != "")
 	{
-		out << raw_template[0] << "@charset " << raw_template[5] << css.charset << raw_template[6] << raw_template[12];
+		out << raw_template[0] << "@charset " << raw_template[5] << charset << raw_template[6] << raw_template[12];
 	}
 	
-	if(css.import.size() > 0)
+	if(import.size() > 0)
 	{
-		for(int i = 0; i < css.import.size(); i ++)
+		for(int i = 0; i < import.size(); i ++)
 		{
-			out << raw_template[0] << "@import " << raw_template[5] << css.import[i] << raw_template[6] << raw_template[12];
+			out << raw_template[0] << "@import " << raw_template[5] << import[i] << raw_template[6] << raw_template[12];
 		}
 	}
 	
-	if(css.namesp != "")
+	if(namesp != "")
 	{
-		out << raw_template[0] << "@namespace " << raw_template[5] << css.namesp << raw_template[6] << raw_template[12];
+		out << raw_template[0] << "@namespace " << raw_template[5] << namesp << raw_template[6] << raw_template[12];
 	}
 	
-	for(css_struct::iterator i = css.css.begin(); i != css.css.end(); ++i )
+	for(css_struct::iterator i = css.begin(); i != css.end(); ++i )
 	{
 		if(i->first != "standard") out << raw_template[0] << i->first << raw_template[1];
 		
@@ -74,11 +111,6 @@ void print_css(css_manage &css, string filename)
 			if(settings["sort_properties"]) j->second.sort();
 			
 			if(i->first != "standard") out << raw_template[10];
-			
-			if(css.comments.count(i->first + j->first) > 0)
-			{
-				out << raw_template[13] << "/*" << css.comments[i->first + j->first] << "*/" << raw_template[14];
-			}
 			
 			out << ((j->first[0] != '@') ? raw_template[2] : raw_template[0]) << j->first;
 
@@ -122,9 +154,9 @@ void print_css(css_manage &css, string filename)
 	output = trim(output);
 		
 	if(!settings["silent"]) {
-		cout << endl << "Selectors: " << css.selectors << " | Properties: " << css.properties << endl;
-		float ratio = round(((css.input_size - (float) output.length())/css.input_size)*100,2);
-		float i_b = round(((float) css.input_size)/1024,3);
+		cout << endl << "Selectors: " << selectors << " | Properties: " << properties << endl;
+		float ratio = round(((input_size - (float) output.length())/input_size)*100,2);
+		float i_b = round(((float) input_size)/1024,3);
 		float o_b = round(((float) output.length())/1024,3);
 		cout << "Input size: " << i_b << "KiB  Output size: " << o_b << "KiB  Compression ratio: " << ratio << "%" << endl;
 	}
@@ -139,10 +171,10 @@ void print_css(css_manage &css, string filename)
 		file_output << output;
 	}	
 	
-	if(css.logs.size() > 0 && !settings["silent"])
+	if(logs.size() > 0 && !settings["silent"])
 	{
 		cout << "-----------------------------------\n\n";
-		for(map<int, vector<message> >::iterator j = css.logs.begin(); j != css.logs.end(); j++ )
+		for(map<int, vector<message> >::iterator j = logs.begin(); j != logs.end(); j++ )
 		{
 			for(int i = 0; i < j->second.size(); ++i)
 			{

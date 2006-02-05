@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-#define CSSTIDY_VERSION "1.1"
+#define CSSTIDY_VERSION "1.2beta"
 #include <cstdlib>
 #include <string> 
 #include <iterator>
@@ -37,8 +37,8 @@
 #include "important.hpp"
 #include "file_functions.hpp"
 
-#include "css_manage.hpp"
 #include "cssopt.hpp"
+#include "csstidy.hpp"
 
 #include "parse_css.hpp"
 #include "print_css.hpp"

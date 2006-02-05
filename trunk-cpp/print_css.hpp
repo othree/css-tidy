@@ -20,6 +20,6 @@
 #define HEADER_CSS_PRINT 
 
 // Prints CSS to screen
-void print_css(css_manage &css, string filename = "");
+
 
 #endif // HEADER_CSS_PRINT

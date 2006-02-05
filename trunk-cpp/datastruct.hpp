@@ -20,9 +20,9 @@ using namespace std;
 #ifndef HEADER_CSS_STRUCT 
 #define HEADER_CSS_STRUCT 
 
-typedef umap<string, string> pstore;
+typedef umap<string, string>   pstore;
 typedef umap<string, pstore >  sstore;
-typedef umap<string, sstore>  css_struct;
+typedef umap<string, sstore>   css_struct;
 
 enum parse_status
 {
@@ -32,6 +32,17 @@ enum parse_status
 enum message_type
 {
 	Information,Warning,Error
+};
+
+enum token_type
+{
+	AT_START, AT_END, SEL_START, SEL_END, PROPERTY, VALUE, COMMENT
+};
+
+struct token
+{
+	token_type type;
+	string data;
 };
 
 struct message

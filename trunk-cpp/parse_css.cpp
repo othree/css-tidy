@@ -34,7 +34,7 @@ extern map< string, vector<string> > shorthands;
 extern string css_level;
 extern map<string,parse_status> at_rules;
 
-void css_manage::parse_css(string css_input)
+void csstidy::parse_css(string css_input)
 {
 	input_size = css_input.length();
 	css_input = str_replace("\r\n","\n",css_input); // Replace all double-newlines
@@ -72,6 +72,7 @@ void css_manage::parse_css(string css_input)
 				else if(css_input[i] == '{')
 				{
 					status = is;
+					add_token(AT_START, cur_at);
 				}
 				else if(css_input[i] == ',')
 				{
@@ -145,10 +146,12 @@ void css_manage::parse_css(string css_input)
 				else if(css_input[i] == '{')
 				{
 					status = ip;
+					add_token(SEL_START, cur_selector);
 					++selectors;
 				}
 				else if(css_input[i] == '}')
 				{
+					add_token(AT_END, cur_at);
 					cur_at = "";
 					cur_selector = "";
 				}
@@ -179,6 +182,10 @@ void css_manage::parse_css(string css_input)
 				if(css_input[i] == ':' || css_input[i] == '=' && cur_property != "") // IE really accepts =, so csstidy will fix those mistakes
 				{
 					status = iv;
+					bool valid = (all_properties.count(cur_property) > 0 && all_properties[cur_property].find(css_level,0) != string::npos);
+					if(valid || !settings["discard_invalid_properties"]) {
+						add_token(PROPERTY, cur_property);
+					}
 				}
 				else if(css_input[i] == '/' && s_at(css_input,i+1) == '*' && cur_property == "")
 				{
@@ -193,6 +200,7 @@ void css_manage::parse_css(string css_input)
 					{
 						log("Removed empty selector: " + trim(cur_selector),Information);
 					}
+					add_token(SEL_END, cur_selector);
 					cur_selector = "";
 					cur_property = "";
 				}
@@ -325,12 +333,13 @@ void css_manage::parse_css(string css_input)
 					}
 					
 					bool valid = (all_properties.count(cur_property) > 0 && all_properties[cur_property].find(css_level,0) != string::npos);
-					if(!invalid_at && trim(cur_value) != "" && (!settings["discard_invalid_properties"] || valid))
+					if(!invalid_at && (!settings["discard_invalid_properties"] || valid))
 					{
 						add(cur_at,cur_selector,cur_property,cur_value);
+						add_token(VALUE, cur_value);
 							
 						// Further Optimisation
-						if(cur_property == "background" && settings["optimise_shorthands"] && !settings["only_safe_optimisations"])
+						if(cur_property == "background" && settings["optimise_shorthands"])
 						{
 							map<string,string> temp = dissolve_short_bg(cur_value);
 							remove(cur_at,cur_selector,"background");
@@ -368,14 +377,10 @@ void css_manage::parse_css(string css_input)
 					cur_property = "";
 					cur_sub_value_arr.clear();
 					cur_value = "";
-					if(settings["save_comments"] && cur_comment != "")
-					{
-						comments[cur_at+cur_selector] = rtrim(cur_comment,"\r\n");
-						cur_comment = "";
-					}
 				}
 				if(css_input[i] == '}')
 				{
+					add_token(SEL_END, cur_selector);
 					status = is;
 					invalid_at = false;
 					cur_selector = "";
@@ -432,10 +437,11 @@ void css_manage::parse_css(string css_input)
 			if(css_input[i] == '*' && s_at(css_input,i+1) == '/')
 			{
 				status = comment_from;
-				if(comment_from == is) cur_comment += raw_template[15];
 				++i;
+				add_token(COMMENT, cur_comment);
+				cur_comment = "";
 			}
-			else if(comment_from == is && settings["save_comments"])
+			else
 			{
 				cur_comment += css_input[i];
 			}
@@ -458,7 +464,7 @@ void css_manage::parse_css(string css_input)
 			for(sstore::iterator j = i->second.begin(); j != i->second.end(); ++j)
 			{
 				merge_4value_shorthands(i->first,j->first);
-				if(!settings["only_safe_optimisations"]) merge_bg(j->second);
+				merge_bg(j->second);
 			}
 		}
 
@@ -476,7 +482,7 @@ void css_manage::parse_css(string css_input)
 	}
 }
 
-string css_manage::optimise_subvalue(string subvalue, const string property)
+string csstidy::optimise_subvalue(string subvalue, const string property)
 {
 	subvalue = trim(subvalue);
 	string temp = compress_numbers(subvalue,property);

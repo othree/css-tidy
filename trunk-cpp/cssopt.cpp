@@ -21,7 +21,6 @@ using namespace std;
 
 extern vector<string> units,number_values,color_values;
 extern map<string,string> replace_colors,all_properties;
-extern map<string,bool> settings;
 
 string shorthand(string value)
 {

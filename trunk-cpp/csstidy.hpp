@@ -16,13 +16,10 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-#ifndef HEADER_CSS_MANAGE
-#define HEADER_CSS_MANAGE 
+#ifndef HEADER_CSSTIDY
+#define HEADER_CSSTIDY 
 
-extern map<string,bool> settings;
-extern map< string, vector<string> > shorthands;
-
-class css_manage 
+class csstidy 
 { 
 	public: 
 		css_struct css; 
@@ -31,15 +28,19 @@ class css_manage
 		vector<string> import;
 		map<int, vector<message> > logs;
 		vector<token> csstokens;
+		map<string, int> settings;
 	
 	private:
 		string tokens;
 		int line;
-
+		
 	public:
-	    css_manage();
-	    	
-	    // Various function to manage the CSS structure
+	    csstidy();
+	    
+	    void set_cfg(const string name, const int value);
+		int get_cfg(const string name);
+		
+		// Various function to manage the CSS structure
 		void add(const string &media, const string &selector, const string property, const string value);
 	    void set(string& media, string& selector, string& property, string& value)  ;
 		void remove(const string media,const string selector,const string property);
@@ -48,9 +49,13 @@ class css_manage
 	    void remove(const string media,const string selector);
 	    void add_token(const token_type ttype, const string data, const bool force = false);
 	
-	    // Adds a property-value pair to an existing property-block. ie=false forces deactivation of IE-Hacks
+	    // Adds a property-value pair to an existing property-block.
 		void css_add_property(const string& media, const string& selector, const string& property, const string& value);
-		
+
+		// Prints CSS code
+		void csstidy::print_css(string filename = "");
+		void _convert_raw_css();
+			
 		// Add a message to the message log
 		void log(const string msg, const message_type type, int iline = 0);
 		
@@ -69,6 +74,6 @@ class css_manage
 		
 		/* Dissolves properties like padding:10px 10px 10px to padding-top:10px;padding-bottom:10px;... */
 		map<string,string> dissolve_4value_shorthands(string property, string value);
-}; 
-
-#endif // HEADER_CSS_MANAGE
+};
+	    
+#endif // HEADER_CSSTIDY

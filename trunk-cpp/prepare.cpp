@@ -107,23 +107,6 @@ void prepare()
 	whitespace[0] = " "; whitespace[1] = "\n"; whitespace[2] = "\t";
 	whitespace[3] = "\r"; whitespace[4] = 11;
 	
-	settings["remove_bslash"] = true;
-	settings["compress_colors"] = true;
-	settings["compress_font-weight"] = true;
-	settings["lowercase_s"] = false;
-	settings["save_ie_hacks"] = false;
-	settings["optimise_shorthands"] = true;
-	settings["only_safe_optimisations"] = true;
-	settings["remove_last_;"] = false;
-	settings["uppercase_properties"] = false;
-	settings["sort_properties"] = false;
-	settings["sort_selectors"] = false;
-	settings["merge_selectors"] = true;
-	settings["discard_invalid_properties"] = false;
-	settings["save_comments"] = false;
-	settings["allow_html_in_templates"] = false;
-	settings["silent"] = false;
-	
 	number_values.push_back("line-height");
 	number_values.push_back("pitch-range");
 	number_values.push_back("richness");

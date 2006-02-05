@@ -17,8 +17,9 @@
  */
  
 #include "csspp_globals.hpp"
+extern map< string, vector<string> > shorthands;
 
-css_manage::css_manage()
+csstidy::csstidy()
 { 
 	properties = 0;
 	selectors = 0;
@@ -26,9 +27,37 @@ css_manage::css_manage()
 	namesp = "";
 	line = 1;
 	tokens = "{};:()@='\"/,\\!$%&*+.<>?[]^`|~";
+	
+	settings["remove_bslash"] = 1;
+	settings["compress_colors"] = 1;
+	settings["compress_font-weight"] = 1;
+	settings["lowercase_s"] = 0;
+	settings["optimise_shorthands"] = 0;
+	settings["remove_last_;"] = 0;
+	settings["uppercase_properties"] = 0;
+	settings["sort_properties"] = 0;
+	settings["sort_selectors"] = 0;
+	settings["merge_selectors"] = 1;
+	settings["discard_invalid_properties"] = 0;
+	settings["allow_html_in_templates"] = 0;
+	settings["silent"] = 0;
+	settings["preserve_css"] = 1;
 } 
 
-void css_manage::add(const string& media,const string& selector,const string property,const string value)  
+void csstidy::set_cfg(const string name, const int value)
+{
+	settings[name] = value;
+}
+
+int csstidy::get_cfg(const string name)
+{
+	if(settings.count(name) > 0) {
+		return settings[name];
+	}
+	return 0;
+}
+		
+void csstidy::add(const string& media,const string& selector,const string property,const string value)  
 {
 	if(css[media].has(selector))
 	{
@@ -40,7 +69,7 @@ void css_manage::add(const string& media,const string& selector,const string pro
 	}
 }
 
-void css_manage::add_token(const token_type ttype, const string data, const bool force)
+void csstidy::add_token(const token_type ttype, const string data, const bool force)
 {
 	if(settings["preserve_css"] || force) {
 		token temp;
@@ -50,22 +79,22 @@ void css_manage::add_token(const token_type ttype, const string data, const bool
 	}
 }
 
-void css_manage::set(string& media, string& selector, string& property, string& value)  
+void csstidy::set(string& media, string& selector, string& property, string& value)  
 {
 	css[media][selector][property] = value;
 } 
 
-void css_manage::remove(const string media,const string selector,const string property) 
+void csstidy::remove(const string media,const string selector,const string property) 
 {
 	css[media][selector].erase(property);
 }
 
-string css_manage::get(string media, string selector, string property)
+string csstidy::get(string media, string selector, string property)
 {
 	return css[media][selector][property];
 }
 
-void css_manage::copy(const string media, const string selector, const string media_new, const string selector_new)
+void csstidy::copy(const string media, const string selector, const string media_new, const string selector_new)
 {
 	for(int k = 0; k < css[media][selector].size(); k++)
 	{	
@@ -75,13 +104,13 @@ void css_manage::copy(const string media, const string selector, const string me
 	}
 }
 
-void css_manage::remove(string media, string selector) 
+void csstidy::remove(string media, string selector) 
 { 
 	css[media].erase(selector);
 }
 
 // Adds a property-value pair to an existing property-block.
-void css_manage::css_add_property(const string& media, const string& selector, const string& property, const string& value)
+void csstidy::css_add_property(const string& media, const string& selector, const string& property, const string& value)
 {
 	if(css[media][selector].has(property))
 	{
@@ -97,7 +126,7 @@ void css_manage::css_add_property(const string& media, const string& selector, c
 	}
 }
 
-void css_manage::log(const string msg, const message_type type, int iline)
+void csstidy::log(const string msg, const message_type type, int iline)
 {
 	message new_msg;
 	new_msg.m = msg;
@@ -119,7 +148,7 @@ void css_manage::log(const string msg, const message_type type, int iline)
 	logs[line].push_back(new_msg);
 }
 
-string css_manage::unicode(string& istring,int& i)
+string csstidy::unicode(string& istring,int& i)
 {
 	++i;
 	string add = "";
@@ -165,7 +194,7 @@ string css_manage::unicode(string& istring,int& i)
 	return "";
 }
 
-bool css_manage::is_token(string& istring,const int i)
+bool csstidy::is_token(string& istring,const int i)
 {
 	if(in_str_array(tokens,istring[i]) && !escaped(istring,i))
 	{
@@ -174,7 +203,7 @@ bool css_manage::is_token(string& istring,const int i)
 	return false;
 }
 
-void css_manage::merge_4value_shorthands(string media, string selector)
+void csstidy::merge_4value_shorthands(string media, string selector)
 {
 	for(map< string, vector<string> >::iterator i = shorthands.begin(); i != shorthands.end(); ++i )
 	{
@@ -203,7 +232,7 @@ void css_manage::merge_4value_shorthands(string media, string selector)
 	}
 } 
 
-map<string,string> css_manage::dissolve_4value_shorthands(string property, string value)
+map<string,string> csstidy::dissolve_4value_shorthands(string property, string value)
 {
 	map<string, string> ret;
 	extern map< string, vector<string> > shorthands;

@@ -23,13 +23,13 @@ using namespace std;
 #include "prepare.hpp"
 
 extern vector<string> raw_template;
-extern map<string,bool> settings;
 extern string css_level;
 extern map<string, vector<string> > predefined_templates;
 
 int main(int argc, char *argv[])
 {
 	prepare();
+	csstidy csst;
 
 	if(argc > 1)
 	{
@@ -45,16 +45,16 @@ int main(int argc, char *argv[])
 		for(int i = 2; i < argc; ++i)
 		{
 			bool output_file = true;
-			for(map<string,bool>::iterator j = settings.begin(); j != settings.end(); ++j )
+			for(map<string,int>::iterator j = csst.settings.begin(); j != csst.settings.end(); ++j )
 			{
 				if(trim(argv[i]) == "--" + j->first + "=false")
 				{
-					settings[j->first] = false;
+					csst.settings[j->first] = 0;
 					output_file = false;
 				}
 				else if(trim(argv[i]) == "--" + j->first + "=true")
 				{
-					settings[j->first] = true;
+					csst.settings[j->first] = 1;
 					output_file = false;
 				}
 			}
@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 			}
 		}
 		
-		if(!settings["allow_html_in_templates"])
+		if(!csst.settings["allow_html_in_templates"])
 		{
 			for(int i = 0; i < raw_template.size(); ++i)
 			{
@@ -108,24 +108,28 @@ int main(int argc, char *argv[])
 		} else {
             css_file = file_get_contents(argv[1]);
         }
-		css_manage css;
-		css.parse_css(css_file);
+
+		csst.parse_css(css_file);
 		
 		// Print CSS to screen if no output file is specified
 		if(output_filename == "")
 		{
-			print_css(css);
+			for(int i = 0; i < csst.csstokens.size(); i++)
+			{
+				cout << "type:" << csst.csstokens[i].type << ";data:" << csst.csstokens[i].data << endl;
+			}
+			csst.print_css();
 		}
 		else
 		{
-			print_css(css,output_filename);
+			csst.print_css(output_filename);
 		}
 		
 		return EXIT_SUCCESS;
 	}
 
 	cout << endl << "Usage:" << endl << endl << "csstidy input_filename [\n";
-	for(map<string,bool>::iterator j = settings.begin(); j != settings.end(); ++j )
+	for(map<string,int>::iterator j = csst.settings.begin(); j != csst.settings.end(); ++j )
 	{
 		cout << " --" << j->first;
 		if(j->second == true)
