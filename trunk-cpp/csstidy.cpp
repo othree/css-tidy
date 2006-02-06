@@ -34,7 +34,7 @@ csstidy::csstidy()
 	settings["lowercase_s"] = 0;
 	settings["optimise_shorthands"] = 0;
 	settings["remove_last_;"] = 0;
-	settings["uppercase_properties"] = 0;
+	settings["case_properties"] = 0;
 	settings["sort_properties"] = 0;
 	settings["sort_selectors"] = 0;
 	settings["merge_selectors"] = 1;
@@ -42,21 +42,23 @@ csstidy::csstidy()
 	settings["allow_html_in_templates"] = 0;
 	settings["silent"] = 0;
 	settings["preserve_css"] = 1;
+	
+	csstemplate.push_back("<span class=\"at\">"); //string before @rule
+	csstemplate.push_back("</span> <span class=\"format\">{</span>\n"); //bracket after @-rule
+	csstemplate.push_back("<span class=\"selector\">"); //string before selector
+	csstemplate.push_back("</span> <span class=\"format\">{</span>\n"); //bracket after selector
+	csstemplate.push_back("<span class=\"property\">"); //string before property
+	csstemplate.push_back("</span><span class=\"value\">"); //string after property+before value
+	csstemplate.push_back("</span><span class=\"format\">;</span>\n"); //string after value
+	csstemplate.push_back("<span class=\"format\">}</span>"); //closing bracket - selector
+	csstemplate.push_back("\n\n"); //space between blocks {...}
+	csstemplate.push_back("\n<span class=\"format\">}</span>\n\n"); //closing bracket @-rule
+	csstemplate.push_back(""); //indent in @-rule
+	csstemplate.push_back("<span class=\"comment\">"); // before comment
+	csstemplate.push_back("</span>\n"); //after comment
+	csstemplate.push_back("\n"); // between comments
 } 
-
-void csstidy::set_cfg(const string name, const int value)
-{
-	settings[name] = value;
-}
-
-int csstidy::get_cfg(const string name)
-{
-	if(settings.count(name) > 0) {
-		return settings[name];
-	}
-	return 0;
-}
-		
+	
 void csstidy::add(const string& media,const string& selector,const string property,const string value)  
 {
 	if(css[media].has(selector))

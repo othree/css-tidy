@@ -22,7 +22,6 @@ using namespace std;
 
 #include "prepare.hpp"
 
-extern vector<string> raw_template;
 extern string css_level;
 extern map<string, vector<string> > predefined_templates;
 
@@ -47,14 +46,19 @@ int main(int argc, char *argv[])
 			bool output_file = true;
 			for(map<string,int>::iterator j = csst.settings.begin(); j != csst.settings.end(); ++j )
 			{
-				if(trim(argv[i]) == "--" + j->first + "=false")
+				if(trim(argv[i]) == "--" + j->first + "=false" || trim(argv[i]) == "--" + j->first + "=0")
 				{
 					csst.settings[j->first] = 0;
 					output_file = false;
 				}
-				else if(trim(argv[i]) == "--" + j->first + "=true")
+				else if(trim(argv[i]) == "--" + j->first + "=true" || trim(argv[i]) == "--" + j->first + "=1")
 				{
 					csst.settings[j->first] = 1;
+					output_file = false;
+				}
+				else if(trim(argv[i]) == "--" + j->first + "=2")
+				{
+					csst.settings[j->first] = 2;
 					output_file = false;
 				}
 			}
@@ -66,11 +70,11 @@ int main(int argc, char *argv[])
 			else if(trim(argv[i]).substr(0,11) == "--template=")
 			{
 				string template_value = trim(argv[i]).substr(11);
-				if(template_value == "high_compression" || template_value == "default" || template_value == "highest_compression" || template_value == "low_compression")
+				if(template_value == "high_compression" || template_value == "highest_compression" || template_value == "low_compression")
 				{
-					raw_template = predefined_templates[template_value];
+					csst.csstemplate = predefined_templates[template_value];
 				}
-				else
+				else if(template_value != "default")
 				{
 					string tpl_content = file_get_contents(template_value);
 					if(tpl_content != "")
@@ -78,7 +82,7 @@ int main(int argc, char *argv[])
 						vector<string> tpl_arr = explode("|",tpl_content,true);
 						if(tpl_arr.size() == 13)
 						{
-							raw_template = tpl_arr;
+							csst.csstemplate = tpl_arr;
 						}
 					}
 				}
@@ -87,14 +91,6 @@ int main(int argc, char *argv[])
 			if(output_file)
 			{
 				output_filename = trim(argv[i]);
-			}
-		}
-		
-		if(!csst.settings["allow_html_in_templates"])
-		{
-			for(int i = 0; i < raw_template.size(); ++i)
-			{
-				raw_template[i] = strip_tags(raw_template[i]);
 			}
 		}
 		
@@ -114,10 +110,6 @@ int main(int argc, char *argv[])
 		// Print CSS to screen if no output file is specified
 		if(output_filename == "")
 		{
-			for(int i = 0; i < csst.csstokens.size(); i++)
-			{
-				cout << "type:" << csst.csstokens[i].type << ";data:" << csst.csstokens[i].data << endl;
-			}
 			csst.print_css();
 		}
 		else

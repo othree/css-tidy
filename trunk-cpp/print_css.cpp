@@ -20,11 +20,18 @@
 
 using namespace std;
 
-extern vector<string> raw_template,html_template;
+string csstidy::_htmlsp(const string istring, const bool plain)
+{
+    if (!plain) {
+        return htmlspecialchars(istring);
+    }
+    return istring;
+}
 
 void csstidy::_convert_raw_css()
 {
 	vector<token> newtokens;
+	csstokens = newtokens;
 	
 	css.sort();
         
@@ -55,6 +62,21 @@ void csstidy::_convert_raw_css()
     }
 }
 
+int csstidy::_seeknocomment(const int key, int move)
+{
+    int go = (move > 0) ? 1 : -1;
+    for (int i = key + 1; abs(key-i)-1 < abs(move); i += go) {
+        if (i < 0 || i > csstokens.size()) {
+            return -1;
+        }
+        if (csstokens[i].type == COMMENT) {
+            move += 1;
+            continue;
+        }
+        return csstokens[i].type;
+    }
+}
+
 void csstidy::print_css(string filename)
 {
 	if(css.empty() && charset == "" && namesp == "" && import.empty())
@@ -78,71 +100,88 @@ void csstidy::print_css(string filename)
 		_convert_raw_css();
 	}
 
+	if(!settings["allow_html_in_templates"])
+	{
+		for(int i = 0; i < csstemplate.size(); ++i)
+		{
+			csstemplate[i] = strip_tags(csstemplate[i]);
+		}
+	}
+		
 	stringstream out;
 	
-	css.sort();
-
 	if(charset != "")
 	{
-		out << raw_template[0] << "@charset " << raw_template[5] << charset << raw_template[6] << raw_template[12];
+		out << csstemplate[0] << "@charset " << csstemplate[5] << charset << csstemplate[6];
 	}
 	
 	if(import.size() > 0)
 	{
 		for(int i = 0; i < import.size(); i ++)
 		{
-			out << raw_template[0] << "@import " << raw_template[5] << import[i] << raw_template[6] << raw_template[12];
+			out << csstemplate[0] << "@import " << csstemplate[5] << import[i] << csstemplate[6];
 		}
 	}
 	
 	if(namesp != "")
 	{
-		out << raw_template[0] << "@namespace " << raw_template[5] << namesp << raw_template[6] << raw_template[12];
+		out << csstemplate[0] << "@namespace " << csstemplate[5] << namesp << csstemplate[6];
 	}
 	
-	for(css_struct::iterator i = css.begin(); i != css.end(); ++i )
-	{
-		if(i->first != "standard") out << raw_template[0] << i->first << raw_template[1];
-		
-		if(settings["sort_selectors"]) i->second.sort();
-		
-		for(sstore::iterator j = i->second.begin(); j != i->second.end(); ++j)
-		{
-			if(settings["sort_properties"]) j->second.sort();
-			
-			if(i->first != "standard") out << raw_template[10];
-			
-			out << ((j->first[0] != '@') ? raw_template[2] : raw_template[0]) << j->first;
+	out << csstemplate[13];
+	   
+    bool in_at = false;
+    bool plain = !settings["allow_html_in_templates"];
 
-			out << ((i->first != "standard") ? raw_template[11] : raw_template[3]);
-			
-			for(umap<string,string>::iterator k = j->second.begin(); k != j->second.end(); ++k)
-			{				
-				out <<  raw_template[4];
-				if(settings["uppercase_properties"]) out << strtoupper(k->first); else out << k->first;
-				out << raw_template[5] << ":" << k->second;
-				
-				// Remove last ; if necessary
-				if(k.islast() && settings["remove_last_;"])
-				{
-					out << str_replace(";","",raw_template[6]);
-				}
-				else
-				{
-					out << raw_template[6];
-				}
+    for (int i = 0; i < csstokens.size(); ++i)
+    {
+        switch (csstokens[i].type)
+        {
+            case AT_START:
+                out << csstemplate[0] << _htmlsp(csstokens[i].data, plain) + csstemplate[1];
+                in_at = true;
+                break;
+            
+            case SEL_START:
+                out << ((in_at) ? csstemplate[10] : "");
+                if(settings["lowercase_s"]) csstokens[i].data = strtolower(csstokens[i].data);
+                out << ((csstokens[i].data[0] != '@') ? csstemplate[2] + _htmlsp(csstokens[i].data, plain) : csstemplate[0] + _htmlsp(csstokens[i].data, plain));
+                out << csstemplate[3];
+                break;
+                
+            case PROPERTY:
+                out << ((in_at) ? csstemplate[10] : "");
+                if(settings["case_properties"] == 2) csstokens[i].data = strtoupper(csstokens[i].data);
+                if(settings["case_properties"] == 1) csstokens[i].data = strtolower(csstokens[i].data);
+                out << csstemplate[4] << _htmlsp(csstokens[i].data, plain) << ":" << csstemplate[5];
+                break;
+            
+            case VALUE:
+                out << _htmlsp(csstokens[i].data, plain);
+                if(_seeknocomment(i, 1) == SEL_END && settings["remove_last_;"]) {
+                    out << str_replace(";", "", csstemplate[6]);
+                } else {
+                    out << csstemplate[6];
+                }
+                break;
+            
+            case SEL_END:
+                out << ((in_at) ? csstemplate[10] : "");
+                out << csstemplate[7];
+                if(_seeknocomment(i, 1) != AT_END) out << csstemplate[8];
+                break;
+            
+            case AT_END:
+                out << csstemplate[9];
+                in_at = false;
+                break;
 
-			}
-			
-			if (i->first != "standard") out << raw_template[10];
-			out << raw_template[7];
-			if ( (!j.islast() && i->first != "standard") || i->first == "standard") out << raw_template[8];
-			out.flush();
-		}
-		
-		if (i->first != "standard") out << raw_template[9];
-	}
-	
+            case COMMENT:
+                out << csstemplate[11] <<  "/*" << _htmlsp(csstokens[i].data, plain) << "*/" << csstemplate[12];
+                break;
+        }
+    }
+        
 	string c,output;
 	
 	while(out.good())

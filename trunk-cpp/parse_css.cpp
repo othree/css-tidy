@@ -28,7 +28,6 @@ using namespace std;
  * at = in @-block
  */
 
-extern vector<string> raw_template;
 extern map<string,string> all_properties,replace_colors;
 extern map< string, vector<string> > shorthands;
 extern string css_level;

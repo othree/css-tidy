@@ -21,7 +21,7 @@
 map<string,bool> settings;
 string css_level = "CSS2.1";
 vector<string> whitespace(5);
-vector<string> units,raw_template,html_template;
+vector<string> units;
 map< string, vector<string> > shorthands, predefined_templates;
 map<string,string> background_prop_default,replace_colors,all_properties;
 vector<string> number_values,color_values;
@@ -34,24 +34,6 @@ void prepare()
 	units.push_back("em"); units.push_back("vw"); units.push_back("vh"); units.push_back("vm"); units.push_back("deg");
 	units.push_back("grad"); units.push_back("rad"); units.push_back("ms"); units.push_back("s"); units.push_back("khz");
 	units.push_back("hz");
-	
-
-	predefined_templates["default"].push_back("<span class=\"at\">"); //string before @rule
-	predefined_templates["default"].push_back("</span> <span class=\"format\">{</span>\n"); //bracket after @-rule
-	predefined_templates["default"].push_back("<span class=\"selector\">"); //string before selector
-	predefined_templates["default"].push_back("</span> <span class=\"format\">{</span>\n"); //bracket after selector
-	predefined_templates["default"].push_back("<span class=\"property\">"); //string before property
-	predefined_templates["default"].push_back("</span><span class=\"value\">"); //string after property+before value
-	predefined_templates["default"].push_back("</span><span class=\"format\">;</span>\n"); //string after value
-	predefined_templates["default"].push_back("<span class=\"format\">}</span>"); //closing bracket - selector
-	predefined_templates["default"].push_back("\n\n"); //after closing bracket (conditional)
-	predefined_templates["default"].push_back("\n<span class=\"format\">}</span>\n\n"); //closing bracket @-rule
-	predefined_templates["default"].push_back(""); //indent in @-rule
-	predefined_templates["default"].push_back("</span> <span class=\"format\">{</span>\n"); //indent in @-rule before selector bracket
-	predefined_templates["default"].push_back(""); // after @-rule
-	predefined_templates["default"].push_back("<span class=\"comment\">"); // before comment
-	predefined_templates["default"].push_back("</span>\n"); //after comment
-	predefined_templates["default"].push_back("\n"); // between comments
 	
 	predefined_templates["high_compression"].push_back("<span class=\"at\">");
 	predefined_templates["high_compression"].push_back("</span> <span class=\"format\">{</span>\n");
@@ -259,9 +241,7 @@ void prepare()
 	replace_colors["wheat"] = "#F5DEB3";
 	replace_colors["whitesmoke"] = "#F5F5F5";
 	replace_colors["yellowgreen"] = "#9ACD32";
-	
-	raw_template = predefined_templates["default"];
-	
+		
 	shorthands["border-color"].push_back("border-top-color");
 	shorthands["border-color"].push_back("border-right-color");
 	shorthands["border-color"].push_back("border-bottom-color");
