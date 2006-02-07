@@ -22,7 +22,6 @@ using namespace std;
 
 #include "prepare.hpp"
 
-extern string css_level;
 extern map<string, vector<string> > predefined_templates;
 
 int main(int argc, char *argv[])
@@ -64,7 +63,7 @@ int main(int argc, char *argv[])
 			}
 			if(trim(argv[i]).substr(0,12) == "--css_level=")
 			{
-				css_level = strtoupper(trim(argv[i]).substr(12));
+				csst.css_level = strtoupper(trim(argv[i]).substr(12));
 				output_file = false;
 			}
 			else if(trim(argv[i]).substr(0,11) == "--template=")

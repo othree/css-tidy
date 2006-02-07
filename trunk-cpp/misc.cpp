@@ -18,17 +18,13 @@
  
 #include "csspp_globals.hpp"
 
-bool escaped(const string &istring, int pos) 
+bool escaped(const string &istring, const int pos) 
 {
-	if(s_at(istring,pos-1) != '\\' || escaped(istring,pos-1))
-	{
-		return false;
-	}
-	return true;
+	return !(s_at(istring,pos-1) != '\\' || escaped(istring,pos-1));
 }
 
 // Save replacement for .at()
-char s_at(const string &istring,int pos)
+char s_at(const string &istring, const int pos)
 {
 	if(pos > (istring.length()-1) && pos < 0)
 	{
@@ -90,7 +86,6 @@ float round(const float &number, const int num_digits)
 }
 
 
-
 string str_replace(const string find, const string replace, string str)
 {
     int len = find.length();
@@ -138,11 +133,7 @@ bool in_char_arr(const char* haystack, const char needle)
 
 bool in_str_array(const string& haystack, const char needle)
 {
-	if(haystack.find_first_of(needle,0) != string::npos)
-	{
-		return true;
-	}
-	return false;
+	return (haystack.find_first_of(needle,0) != string::npos);
 }
 
 bool in_str_array(const vector<string>& haystack, const string needle)

@@ -30,8 +30,7 @@ string csstidy::_htmlsp(const string istring, const bool plain)
 
 void csstidy::_convert_raw_css()
 {
-	vector<token> newtokens;
-	csstokens = newtokens;
+	csstokens = vector<token>();
 	
 	css.sort();
         
@@ -79,7 +78,7 @@ int csstidy::_seeknocomment(const int key, int move)
 
 void csstidy::print_css(string filename)
 {
-	if(css.empty() && charset == "" && namesp == "" && import.empty())
+	if(css.empty() && charset == "" && namesp == "" && import.empty() && csstokens.empty())
 	{
 		if(!settings["silent"]) cout << "Invalid CSS!" << endl;
 		return;
@@ -177,6 +176,7 @@ void csstidy::print_css(string filename)
                 break;
 
             case COMMENT:
+                out << ((in_at) ? csstemplate[10] : "");
                 out << csstemplate[11] <<  "/*" << _htmlsp(csstokens[i].data, plain) << "*/" << csstemplate[12];
                 break;
         }

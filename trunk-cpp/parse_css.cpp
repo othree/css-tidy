@@ -30,7 +30,6 @@ using namespace std;
 
 extern map<string,string> all_properties,replace_colors;
 extern map< string, vector<string> > shorthands;
-extern string css_level;
 extern map<string,parse_status> at_rules;
 
 void csstidy::parse_css(string css_input)
@@ -38,8 +37,7 @@ void csstidy::parse_css(string css_input)
 	input_size = css_input.length();
 	css_input = str_replace("\r\n","\n",css_input); // Replace all double-newlines
 	css_input += "\n";
-	parse_status status = is;
-	parse_status comment_from,str_from;
+	parse_status status = is, from;
 
 	string cur_selector,cur_at,cur_property,cur_sub_value,cur_value,temp_add,cur_comment,temp;
 
@@ -66,7 +64,7 @@ void csstidy::parse_css(string css_input)
 				if(css_input[i] == '/' && s_at(css_input,i+1) == '*')
 				{
 					status = ic; i += 2;
-					comment_from = at;
+					from = at;
 				}
 				else if(css_input[i] == '{')
 				{
@@ -99,7 +97,7 @@ void csstidy::parse_css(string css_input)
 				if(css_input[i] == '/' && s_at(css_input,i+1) == '*' && trim(cur_selector) == "")
 				{
 					status = ic; ++i;
-					comment_from = is;
+					from = is;
 				}
 				else if(css_input[i] == '@' && trim(cur_selector) == "")
 				{
@@ -117,7 +115,7 @@ void csstidy::parse_css(string css_input)
 					}
 					if(invalid_at)
 					{
-						cur_selector = "@" + cur_selector;
+						cur_selector = "@";
 						string invalid_at_name = "";
 						for(int j = i+1; j < str_size; ++j)
 						{
@@ -135,7 +133,7 @@ void csstidy::parse_css(string css_input)
 					cur_selector += css_input[i];
 					status = instr;
 					str_char = css_input[i];
-					str_from = is;
+					from = is;
 				}
 				else if(invalid_at && css_input[i] == ';')
 				{
@@ -189,13 +187,13 @@ void csstidy::parse_css(string css_input)
 				else if(css_input[i] == '/' && s_at(css_input,i+1) == '*' && cur_property == "")
 				{
 					status = ic; ++i;
-					comment_from = ip;
+					from = ip;
 				}
 				else if(css_input[i] == '}')
 				{
 					status = is;
 					invalid_at = false;
-					if(cur_selector[0] != '@' && css.has(cur_at) && !css[cur_at].has(cur_selector))
+					if(cur_selector[0] != '@' && css.has(cur_at) && !css[cur_at].has(cur_selector) && !settings["preserve_css"])
 					{
 						log("Removed empty selector: " + trim(cur_selector),Information);
 					}
@@ -230,14 +228,14 @@ void csstidy::parse_css(string css_input)
 				if(css_input[i] == '/' && s_at(css_input,i+1) == '*')
 				{
 					status = ic; ++i;
-					comment_from = iv;
+					from = iv;
 				}
 				else if(css_input[i] == '"' || css_input[i] == '\'' || css_input[i] == '(')
 				{
 					cur_sub_value += css_input[i];
 					str_char = (css_input[i] == '(') ? ')' : css_input[i];
 					status = instr;
-					str_from = iv;
+					from = iv;
 				}
 				else if(css_input[i] == '\\') 
 				{
@@ -332,7 +330,7 @@ void csstidy::parse_css(string css_input)
 					}
 					
 					bool valid = (all_properties.count(cur_property) > 0 && all_properties[cur_property].find(css_level,0) != string::npos);
-					if(!invalid_at && (!settings["discard_invalid_properties"] || valid))
+					if((!invalid_at || settings["preserve_css"]) && (!settings["discard_invalid_properties"] || valid))
 					{
 						add(cur_at,cur_selector,cur_property,cur_value);
 						add_token(VALUE, cur_value);
@@ -341,7 +339,7 @@ void csstidy::parse_css(string css_input)
 						if(cur_property == "background" && settings["optimise_shorthands"])
 						{
 							map<string,string> temp = dissolve_short_bg(cur_value);
-							remove(cur_at,cur_selector,"background");
+							css[cur_at][cur_selector].erase("background");
 							for(map<string,string>::iterator it = temp.begin(); it != temp.end(); ++it )
 							{
 								add(cur_at,cur_selector,it->first,it->second);
@@ -356,7 +354,7 @@ void csstidy::parse_css(string css_input)
 							}
 							if(shorthands[cur_property][0] != "0")
 							{
-								remove(cur_at,cur_selector,cur_property);
+								css[cur_at][cur_selector].erase(cur_property);
 							}
 						}
 					}
@@ -413,7 +411,7 @@ void csstidy::parse_css(string css_input)
 			}
 			if(css_input[i] == str_char && !escaped(css_input,i) && str_in_str == false)
 			{
-				status = str_from;
+				status = from;
 			}
 			temp_add = ""; temp_add += css_input[i];
 			if( (css_input[i] == '\n' || css_input[i] == '\r') && !(css_input[i-1] == '\\' && !escaped(css_input,i-1)) )
@@ -421,11 +419,11 @@ void csstidy::parse_css(string css_input)
 				temp_add = "\\A ";
 				log("Fixed incorrect newline in string",Warning);
 			}
-			if(str_from == iv)
+			if(from == iv)
 			{
 				cur_sub_value += temp_add;
 			}
-			else if(str_from == is)
+			else if(from == is)
 			{
 				cur_selector += temp_add;
 			}
@@ -435,7 +433,7 @@ void csstidy::parse_css(string css_input)
 			case ic:
 			if(css_input[i] == '*' && s_at(css_input,i+1) == '/')
 			{
-				status = comment_from;
+				status = from;
 				++i;
 				add_token(COMMENT, cur_comment);
 				cur_comment = "";

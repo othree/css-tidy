@@ -19,7 +19,6 @@
 #include "csspp_globals.hpp"
 
 map<string,bool> settings;
-string css_level = "CSS2.1";
 vector<string> whitespace(5);
 vector<string> units;
 map< string, vector<string> > shorthands, predefined_templates;

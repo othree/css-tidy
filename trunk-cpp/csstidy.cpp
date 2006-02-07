@@ -27,6 +27,7 @@ csstidy::csstidy()
 	namesp = "";
 	line = 1;
 	tokens = "{};:()@='\"/,\\!$%&*+.<>?[]^`|~";
+	css_level = "CSS2.1";
 	
 	settings["remove_bslash"] = 1;
 	settings["compress_colors"] = 1;
@@ -59,18 +60,6 @@ csstidy::csstidy()
 	csstemplate.push_back("\n"); // between comments
 } 
 	
-void csstidy::add(const string& media,const string& selector,const string property,const string value)  
-{
-	if(css[media].has(selector))
-	{
-		css_add_property(media,selector,property,value);
-	}
-	else
-	{
-		css[media][selector][property] = value;
-	}
-}
-
 void csstidy::add_token(const token_type ttype, const string data, const bool force)
 {
 	if(settings["preserve_css"] || force) {
@@ -85,11 +74,6 @@ void csstidy::set(string& media, string& selector, string& property, string& val
 {
 	css[media][selector][property] = value;
 } 
-
-void csstidy::remove(const string media,const string selector,const string property) 
-{
-	css[media][selector].erase(property);
-}
 
 string csstidy::get(string media, string selector, string property)
 {
@@ -111,14 +95,18 @@ void csstidy::remove(string media, string selector)
 	css[media].erase(selector);
 }
 
-// Adds a property-value pair to an existing property-block.
-void csstidy::css_add_property(const string& media, const string& selector, const string& property, const string& value)
+// Adds a property-value pair to an existing CSS structure
+void csstidy::add(const string& media, const string& selector, const string& property, const string& value)
 {
+	if(settings["preserve_css"]) {
+		return;
+	}
+	
 	if(css[media][selector].has(property))
 	{
-		if( (is_important(css[media][selector][property]) && is_important(value)) || !is_important(css[media][selector][property]) )
+		if( !is_important(css[media][selector][property]) || (is_important(css[media][selector][property]) && is_important(value)) )
 		{
-			remove(media,selector,property);
+			css[media][selector].erase(property);
 			css[media][selector][property] = trim(value);
 		}
 	}
@@ -198,11 +186,7 @@ string csstidy::unicode(string& istring,int& i)
 
 bool csstidy::is_token(string& istring,const int i)
 {
-	if(in_str_array(tokens,istring[i]) && !escaped(istring,i))
-	{
-		return true;
-	}
-	return false;
+	return (in_str_array(tokens,istring[i]) && !escaped(istring,i));
 }
 
 void csstidy::merge_4value_shorthands(string media, string selector)
@@ -227,7 +211,7 @@ void csstidy::merge_4value_shorthands(string media, string selector)
 				{
 					temp += val + " ";
 				}
-				remove(media, selector, i->second[j]);
+				css[media][selector].erase(i->second[j]);
 			}
 			add(media, selector, i->first, shorthand(trim(temp + important)));		
 		}
