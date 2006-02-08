@@ -79,10 +79,7 @@ int main(int argc, char *argv[])
 					if(tpl_content != "")
 					{
 						vector<string> tpl_arr = explode("|",tpl_content,true);
-						if(tpl_arr.size() == 13)
-						{
-							csst.csstemplate = tpl_arr;
-						}
+						csst.csstemplate = tpl_arr;
 					}
 				}
 				output_file = false;
