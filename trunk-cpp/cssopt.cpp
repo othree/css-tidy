@@ -100,16 +100,11 @@ string compress_numbers(string subvalue, string property)
 			temp[i] = "#" + temp[i];
 		}
 	
-		// continue if no numeric value
-		if(i > 0 && !(temp[i].length() > 0 && (ctype_digit(temp[i][0]) || temp[i][0] == '+' || temp[i][0] == '-' ) ))
-		{
-			continue;
-		}
-		if(temp[i].length() > 0  && str2f(temp[i]) == 0 && (ctype_digit(temp[i][0]) || temp[i][0] == '+' || temp[i][0] == '-' ) )
+		if(str2f(temp[i]) == 0)
 		{
 			temp[i] = "0";
 		}
-		else if(temp[i].length() > 0 && (ctype_digit(temp[i][0]) || temp[i][0] == '+' || temp[i][0] == '-' ) )
+		else
 		{
 			bool unit_found = false;
 			temp[i] = strtolower(temp[i]);
@@ -145,11 +140,7 @@ bool property_is_next(string istring, int pos)
 		return false;
 	}
 	istring = strtolower(trim(istring.substr(0,pos)));
-	if(all_properties.count(istring) > 0)
-	{
-		return true;
-	}
-	return false;
+	return (all_properties.count(istring) > 0);
 }
 
 string cut_color(string color)
@@ -244,19 +235,6 @@ int c_font_weight(string& value)
 	return 0;
 }
 
-bool is_no_hack(string selector)
-{
-	selector = trim(selector);
-	if(selector[0] == '*')
-	{
-		selector = trim(selector.substr(1));
-		if(selector.substr(0,4) == "html")
-		{
-			return false;
-		}
-	}
-	return true;
-}
 
 void merge_selectors(sstore& input)
 {

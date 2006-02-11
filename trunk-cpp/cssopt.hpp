@@ -34,9 +34,6 @@ bool property_is_next(string istring, const int pos);
 // Compress font-weight
 int c_font_weight(string& value);
 
-// Checks if selector is a StarHTML Hack
-bool is_no_hack(string selector);
-
 // Merges selectors which have the same properties
 void merge_selectors(sstore& input);
 
