@@ -38,7 +38,7 @@ csstidy::csstidy()
 	settings["case_properties"] = 0;
 	settings["sort_properties"] = 0;
 	settings["sort_selectors"] = 0;
-	settings["merge_selectors"] = 1;
+	settings["merge_selectors"] = 0;
 	settings["discard_invalid_properties"] = 0;
 	settings["allow_html_in_templates"] = 0;
 	settings["silent"] = 0;

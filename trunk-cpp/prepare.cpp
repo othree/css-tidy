@@ -20,7 +20,6 @@
 
 map<string,bool> settings;
 vector<string> whitespace(5);
-vector<string> units;
 map< string, vector<string> > shorthands, predefined_templates;
 map<string,string> background_prop_default,replace_colors,all_properties;
 vector<string> number_values,color_values;
@@ -28,12 +27,7 @@ map<string,parse_status> at_rules;
 
 void prepare()
 {
-	units.push_back("in"); units.push_back("cm"); units.push_back("mm"); units.push_back("pt");	units.push_back("pc");
-	units.push_back("px"); units.push_back("rem"); units.push_back("%"); units.push_back("ex"); units.push_back("gd");
-	units.push_back("em"); units.push_back("vw"); units.push_back("vh"); units.push_back("vm"); units.push_back("deg");
-	units.push_back("grad"); units.push_back("rad"); units.push_back("ms"); units.push_back("s"); units.push_back("khz");
-	units.push_back("hz");
-	
+
 	predefined_templates["high_compression"].push_back("<span class=\"at\">");
 	predefined_templates["high_compression"].push_back("</span> <span class=\"format\">{</span>\n");
 	predefined_templates["high_compression"].push_back("<span class=\"selector\">");

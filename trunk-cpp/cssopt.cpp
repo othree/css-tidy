@@ -19,7 +19,7 @@
 #include "csspp_globals.hpp"
 using namespace std;
 
-extern vector<string> units,number_values,color_values;
+extern vector<string> number_values,color_values;
 extern map<string,string> replace_colors,all_properties;
 
 string shorthand(string value)
@@ -78,6 +78,9 @@ string shorthand(string value)
 
 string compress_numbers(string subvalue, string property)
 {
+	string units[] = {"in", "cm", "mm", "pt", "pc", "px", "rem", "%", "ex", "gd", "em", "vw", "vh",
+	                  "vm", "deg", "grad", "rad", "ms", "s", "khz", "hz" }; // sync  for loop
+	           
 	vector<string> temp;
 	if(property == "font")
 	{
@@ -108,7 +111,7 @@ string compress_numbers(string subvalue, string property)
 		{
 			bool unit_found = false;
 			temp[i] = strtolower(temp[i]);
-			for(int j = 0; j < units.size(); ++j )
+			for(int j = 0; j < 21; ++j )
 			{
 				if(temp[i].find(units[j]) != string::npos)
 				{
@@ -185,11 +188,7 @@ string cut_color(string color)
 
 		if(color_temp[0] == '#' && color_temp[1] == color_temp[2] && color_temp[3] == color_temp[4] && color_temp[5] == color_temp[6])
 		{
-			color_temp = "#";
-			color_temp += color[2];
-			color_temp += color[3];
-			color_temp += color[5];
-			color = color_temp;
+			color = "#" + color[2] + color[3] + color[5];
 		}
 	}
 	
@@ -238,7 +237,7 @@ int c_font_weight(string& value)
 
 void merge_selectors(sstore& input)
 {
-	for(sstore::iterator i = input.begin(); i != input.end(); i++ )
+	for(sstore::iterator i = input.begin(), e = input.end(); i != e;)
 	{
 		string newsel = "";
 	
@@ -270,6 +269,9 @@ void merge_selectors(sstore& input)
 			input[newsel] = i->second;
 			
 			input.erase(i);
+			e = input.end();
+		} else {
+			i++;
 		}
 	}
 }

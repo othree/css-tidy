@@ -117,7 +117,7 @@ class umap
 
 		valT& at(int index)
 		{
-			if(index < size())
+			if(index < size() && index >= 0)
 			{
 				return sortv[index]->second;
 			}
