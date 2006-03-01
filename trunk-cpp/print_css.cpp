@@ -223,7 +223,7 @@ void csstidy::print_css(string filename)
 	}
 
 	if(!settings["silent"]) {
-		cout << "\n-----------------------------------" << endl << "CSSTidy " << CSSTIDY_VERSION << " by Florian Schmitz 2005" << endl;
+		cout << "\n-----------------------------------" << endl << "CSSTidy " << CSSTIDY_VERSION << " by Florian Schmitz 2005, 2006" << endl;
 	}
 	file_output.close();
 }

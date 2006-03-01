@@ -41,7 +41,7 @@ void prepare()
 	predefined_templates["high_compression"].push_back("");
 	predefined_templates["high_compression"].push_back("<span class=\"comment\">"); // before comment
 	predefined_templates["high_compression"].push_back("</span>"); //after comment
-	predefined_templates["high_compression"].push_back("\n");
+	predefined_templates["high_compression"].push_back("\n"); // after last line @-rule
 	
 	predefined_templates["highest_compression"].push_back("<span class=\"at\">");
 	predefined_templates["highest_compression"].push_back("</span><span class=\"format\">{</span>");
@@ -56,7 +56,7 @@ void prepare()
 	predefined_templates["highest_compression"].push_back("");
 	predefined_templates["highest_compression"].push_back("<span class=\"comment\">"); // before comment
 	predefined_templates["highest_compression"].push_back("</span>"); //after comment
-	predefined_templates["highest_compression"].push_back(""); // between comments
+	predefined_templates["highest_compression"].push_back(""); // after last line @-rule
 		
 	predefined_templates["low_compression"].push_back("<span class=\"at\">");
 	predefined_templates["low_compression"].push_back("</span> <span class=\"format\">{</span>\n");
@@ -71,7 +71,7 @@ void prepare()
 	predefined_templates["low_compression"].push_back("\t");
 	predefined_templates["low_compression"].push_back("<span class=\"comment\">"); // before comment
 	predefined_templates["low_compression"].push_back("</span>\n"); //after comment
-	predefined_templates["low_compression"].push_back("\n"); // between comments
+	predefined_templates["low_compression"].push_back("\n"); // after last line @-rule
 
 	whitespace[0] = " "; whitespace[1] = "\n"; whitespace[2] = "\t";
 	whitespace[3] = "\r"; whitespace[4] = 11;

@@ -57,7 +57,7 @@ csstidy::csstidy()
 	csstemplate.push_back(""); //indent in @-rule
 	csstemplate.push_back("<span class=\"comment\">"); // before comment
 	csstemplate.push_back("</span>\n"); //after comment
-	csstemplate.push_back("\n"); // between comments
+	csstemplate.push_back("\n"); // after last line @-rule
 } 
 	
 void csstidy::add_token(const token_type ttype, const string data, const bool force)
@@ -70,16 +70,6 @@ void csstidy::add_token(const token_type ttype, const string data, const bool fo
 	}
 }
 
-void csstidy::set(string& media, string& selector, string& property, string& value)  
-{
-	css[media][selector][property] = value;
-} 
-
-string csstidy::get(string media, string selector, string property)
-{
-	return css[media][selector][property];
-}
-
 void csstidy::copy(const string media, const string selector, const string media_new, const string selector_new)
 {
 	for(int k = 0; k < css[media][selector].size(); k++)
@@ -88,11 +78,6 @@ void csstidy::copy(const string media, const string selector, const string media
 		string value = css[media][selector][property];
 		add(media_new,selector_new,property,value);
 	}
-}
-
-void csstidy::remove(string media, string selector) 
-{ 
-	css[media].erase(selector);
 }
 
 // Adds a property-value pair to an existing CSS structure
@@ -201,7 +186,7 @@ void csstidy::merge_4value_shorthands(string media, string selector)
 			string important = "";
 			for(int j = 0; j < 4; ++j)
 			{
-				string val = get(media, selector, i->second[j]);
+				string val = css[media][selector][i->second[j]];
 				if(is_important(val))
 				{
 					important = " !important";
