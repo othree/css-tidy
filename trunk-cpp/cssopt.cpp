@@ -181,17 +181,20 @@ string cut_color(string color)
 	{
 		color = replace_colors[strtolower(color)];
 	}
-	
+
 	if(color.length() == 7)
 	{
 		string color_temp = strtolower(color);
 
 		if(color_temp[0] == '#' && color_temp[1] == color_temp[2] && color_temp[3] == color_temp[4] && color_temp[5] == color_temp[6])
 		{
-			color = "#" + color[2] + color[3] + color[5];
+			color = "#";
+			color += color[2];
+			color += color[3];
+			color += color[5];
 		}
 	}
-	
+
 	string temp = strtolower(color);
 	/* color name -> hex code */
 	if(temp == "black")		return "#000";

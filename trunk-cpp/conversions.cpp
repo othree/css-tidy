@@ -110,10 +110,8 @@ char chartoupper(const char c)
 string dechex(const int i)
 {
 	stringstream sstream;
-	string ret;
 	sstream << hex << i;
-	sstream >> ret;
-	return ret;
+	return sstream.str();
 }
 
 double hexdec(string istring)
@@ -150,10 +148,8 @@ double hexdec(string istring)
 string f2str(const float f)
 {
 	stringstream sstream;
-	string ret;
 	sstream << f;
-	sstream >> ret;
-	return ret;
+	return sstream.str();
 }
 
 float str2f(const string istring)
@@ -171,9 +167,7 @@ string char2str(const char c)
 string char2str(const char *c)
 {
 	stringstream sstream;
-	string ret;
 	sstream << c;
-	sstream >> ret;
-	return ret;
+	return sstream.str();
 }
 
