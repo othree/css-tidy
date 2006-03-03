@@ -107,29 +107,29 @@ void csstidy::print_css(string filename)
 		}
 	}
 		
-	stringstream out;
+	stringstream output, in_at_out;
 	
 	if(charset != "")
 	{
-		out << csstemplate[0] << "@charset " << csstemplate[5] << charset << csstemplate[6];
+		output << csstemplate[0] << "@charset " << csstemplate[5] << charset << csstemplate[6];
 	}
 	
 	if(import.size() > 0)
 	{
 		for(int i = 0; i < import.size(); i ++)
 		{
-			out << csstemplate[0] << "@import " << csstemplate[5] << import[i] << csstemplate[6];
+			output  << csstemplate[0] << "@import " << csstemplate[5] << import[i] << csstemplate[6];
 		}
 	}
 	
 	if(namesp != "")
 	{
-		out << csstemplate[0] << "@namespace " << csstemplate[5] << namesp << csstemplate[6];
+		output << csstemplate[0] << "@namespace " << csstemplate[5] << namesp << csstemplate[6];
 	}
 	
-	out << csstemplate[13];
+	output << csstemplate[13];
+	stringstream* out =& output;
 	   
-    bool in_at = false;
     bool plain = !settings["allow_html_in_templates"];
 
     for (int i = 0; i < csstokens.size(); ++i)
@@ -137,77 +137,67 @@ void csstidy::print_css(string filename)
         switch (csstokens[i].type)
         {
             case AT_START:
-                out << csstemplate[0] << _htmlsp(csstokens[i].data, plain) + csstemplate[1];
-                in_at = true;
+                *out << csstemplate[0] << _htmlsp(csstokens[i].data, plain) + csstemplate[1];
+                out =& in_at_out;
                 break;
             
             case SEL_START:
-                out << ((in_at) ? csstemplate[10] : "");
                 if(settings["lowercase_s"]) csstokens[i].data = strtolower(csstokens[i].data);
-                out << ((csstokens[i].data[0] != '@') ? csstemplate[2] + _htmlsp(csstokens[i].data, plain) : csstemplate[0] + _htmlsp(csstokens[i].data, plain));
-                out << csstemplate[3];
+                *out << ((csstokens[i].data[0] != '@') ? csstemplate[2] + _htmlsp(csstokens[i].data, plain) : csstemplate[0] + _htmlsp(csstokens[i].data, plain));
+                *out << csstemplate[3];
                 break;
                 
             case PROPERTY:
-                out << ((in_at) ? csstemplate[10] : "");
                 if(settings["case_properties"] == 2) csstokens[i].data = strtoupper(csstokens[i].data);
                 if(settings["case_properties"] == 1) csstokens[i].data = strtolower(csstokens[i].data);
-                out << csstemplate[4] << _htmlsp(csstokens[i].data, plain) << ":" << csstemplate[5];
+                *out << csstemplate[4] << _htmlsp(csstokens[i].data, plain) << ":" << csstemplate[5];
                 break;
             
             case VALUE:
-                out << _htmlsp(csstokens[i].data, plain);
+                *out << _htmlsp(csstokens[i].data, plain);
                 if(_seeknocomment(i, 1) == SEL_END && settings["remove_last_;"]) {
-                    out << str_replace(";", "", csstemplate[6]);
+                    *out << str_replace(";", "", csstemplate[6]);
                 } else {
-                    out << csstemplate[6];
+                    *out << csstemplate[6];
                 }
                 break;
             
             case SEL_END:
-                out << ((in_at) ? csstemplate[10] : "");
-                out << csstemplate[7];
-                if(_seeknocomment(i, 1) != AT_END) out << csstemplate[8];
+                *out << csstemplate[7];
+                if(_seeknocomment(i, 1) != AT_END) *out << csstemplate[8];
                 break;
             
             case AT_END:
-                out << csstemplate[9];
-                in_at = false;
+				out =& output;
+            	*out << csstemplate[10] << str_replace("\n", "\n" + csstemplate[10], in_at_out.str());
+            	in_at_out.str("");
+                *out << csstemplate[9];
                 break;
 
             case COMMENT:
-                out << ((in_at) ? csstemplate[10] : "");
-                out << csstemplate[11] <<  "/*" << _htmlsp(csstokens[i].data, plain) << "*/" << csstemplate[12];
+                *out << csstemplate[11] <<  "/*" << _htmlsp(csstokens[i].data, plain) << "*/" << csstemplate[12];
                 break;
         }
     }
         
-	string c,output;
-	
-	while(out.good())
-	{
-		getline(out,c);
-		output += c + "\n";
-	}
-	
-	output = trim(output);
+	string output_string = trim(output.str());
 		
 	if(!settings["silent"]) {
 		cout << endl << "Selectors: " << selectors << " | Properties: " << properties << endl;
-		float ratio = round(((input_size - (float) output.length())/input_size)*100,2);
+		float ratio = round(((input_size - (float) output_string.length())/input_size)*100,2);
 		float i_b = round(((float) input_size)/1024,3);
-		float o_b = round(((float) output.length())/1024,3);
+		float o_b = round(((float) output_string.length())/1024,3);
 		cout << "Input size: " << i_b << "KiB  Output size: " << o_b << "KiB  Compression ratio: " << ratio << "%" << endl;
 	}
 	
 	if(filename == "")
 	{
 		if(!settings["silent"]) cout << "-----------------------------------\n\n";
-		cout << output << "\n";
+		cout << output_string << "\n";
 	}
 	else
 	{
-		file_output << output;
+		file_output << output_string;
 	}	
 	
 	if(logs.size() > 0 && !settings["silent"])

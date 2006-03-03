@@ -28,50 +28,50 @@ map<string,parse_status> at_rules;
 void prepare()
 {
 
-	predefined_templates["high_compression"].push_back("<span class=\"at\">");
-	predefined_templates["high_compression"].push_back("</span> <span class=\"format\">{</span>\n");
-	predefined_templates["high_compression"].push_back("<span class=\"selector\">");
-	predefined_templates["high_compression"].push_back("</span><span class=\"format\">{</span>");
-	predefined_templates["high_compression"].push_back("<span class=\"property\">");
-	predefined_templates["high_compression"].push_back("</span><span class=\"value\">");
-	predefined_templates["high_compression"].push_back("</span><span class=\"format\">;</span>");
-	predefined_templates["high_compression"].push_back("<span class=\"format\">}</span>");
-	predefined_templates["high_compression"].push_back("\n");
-	predefined_templates["high_compression"].push_back("\n<span class=\"format\">}\n</span>");
-	predefined_templates["high_compression"].push_back("");
-	predefined_templates["high_compression"].push_back("<span class=\"comment\">"); // before comment
-	predefined_templates["high_compression"].push_back("</span>"); //after comment
-	predefined_templates["high_compression"].push_back("\n"); // after last line @-rule
+	predefined_templates["high"].push_back("<span class=\"at\">");
+	predefined_templates["high"].push_back("</span> <span class=\"format\">{</span>\n");
+	predefined_templates["high"].push_back("<span class=\"selector\">");
+	predefined_templates["high"].push_back("</span><span class=\"format\">{</span>");
+	predefined_templates["high"].push_back("<span class=\"property\">");
+	predefined_templates["high"].push_back("</span><span class=\"value\">");
+	predefined_templates["high"].push_back("</span><span class=\"format\">;</span>");
+	predefined_templates["high"].push_back("<span class=\"format\">}</span>");
+	predefined_templates["high"].push_back("\n");
+	predefined_templates["high"].push_back("\n<span class=\"format\">}\n</span>");
+	predefined_templates["high"].push_back("");
+	predefined_templates["high"].push_back("<span class=\"comment\">"); // before comment
+	predefined_templates["high"].push_back("</span>"); //after comment
+	predefined_templates["high"].push_back("\n"); // after last line @-rule
 	
-	predefined_templates["highest_compression"].push_back("<span class=\"at\">");
-	predefined_templates["highest_compression"].push_back("</span><span class=\"format\">{</span>");
-	predefined_templates["highest_compression"].push_back("<span class=\"selector\">");
-	predefined_templates["highest_compression"].push_back("</span><span class=\"format\">{</span>");
-	predefined_templates["highest_compression"].push_back("<span class=\"property\">");
-	predefined_templates["highest_compression"].push_back("</span><span class=\"value\">");
-	predefined_templates["highest_compression"].push_back("</span><span class=\"format\">;</span>");
-	predefined_templates["highest_compression"].push_back("<span class=\"format\">}</span>");
-	predefined_templates["highest_compression"].push_back("");
-	predefined_templates["highest_compression"].push_back("<span class=\"format\">}</span>");
-	predefined_templates["highest_compression"].push_back("");
-	predefined_templates["highest_compression"].push_back("<span class=\"comment\">"); // before comment
-	predefined_templates["highest_compression"].push_back("</span>"); //after comment
-	predefined_templates["highest_compression"].push_back(""); // after last line @-rule
+	predefined_templates["highest"].push_back("<span class=\"at\">");
+	predefined_templates["highest"].push_back("</span><span class=\"format\">{</span>");
+	predefined_templates["highest"].push_back("<span class=\"selector\">");
+	predefined_templates["highest"].push_back("</span><span class=\"format\">{</span>");
+	predefined_templates["highest"].push_back("<span class=\"property\">");
+	predefined_templates["highest"].push_back("</span><span class=\"value\">");
+	predefined_templates["highest"].push_back("</span><span class=\"format\">;</span>");
+	predefined_templates["highest"].push_back("<span class=\"format\">}</span>");
+	predefined_templates["highest"].push_back("");
+	predefined_templates["highest"].push_back("<span class=\"format\">}</span>");
+	predefined_templates["highest"].push_back("");
+	predefined_templates["highest"].push_back("<span class=\"comment\">"); // before comment
+	predefined_templates["highest"].push_back("</span>"); //after comment
+	predefined_templates["highest"].push_back(""); // after last line @-rule
 		
-	predefined_templates["low_compression"].push_back("<span class=\"at\">");
-	predefined_templates["low_compression"].push_back("</span> <span class=\"format\">{</span>\n");
-	predefined_templates["low_compression"].push_back("<span class=\"selector\">");
-	predefined_templates["low_compression"].push_back("</span>\n<span class=\"format\">{</span>\n");
-	predefined_templates["low_compression"].push_back("\t<span class=\"property\">");
-	predefined_templates["low_compression"].push_back("</span><span class=\"value\">");
-	predefined_templates["low_compression"].push_back("</span><span class=\"format\">;</span>\n");
-	predefined_templates["low_compression"].push_back("<span class=\"format\">}</span>");
-	predefined_templates["low_compression"].push_back("\n\n");
-	predefined_templates["low_compression"].push_back("\n<span class=\"format\">}</span>\n\n");
-	predefined_templates["low_compression"].push_back("\t");
-	predefined_templates["low_compression"].push_back("<span class=\"comment\">"); // before comment
-	predefined_templates["low_compression"].push_back("</span>\n"); //after comment
-	predefined_templates["low_compression"].push_back("\n"); // after last line @-rule
+	predefined_templates["low"].push_back("<span class=\"at\">");
+	predefined_templates["low"].push_back("</span> <span class=\"format\">{</span>\n");
+	predefined_templates["low"].push_back("<span class=\"selector\">");
+	predefined_templates["low"].push_back("</span>\n<span class=\"format\">{</span>\n");
+	predefined_templates["low"].push_back("\t<span class=\"property\">");
+	predefined_templates["low"].push_back("</span><span class=\"value\">");
+	predefined_templates["low"].push_back("</span><span class=\"format\">;</span>\n");
+	predefined_templates["low"].push_back("<span class=\"format\">}</span>");
+	predefined_templates["low"].push_back("\n\n");
+	predefined_templates["low"].push_back("\n<span class=\"format\">}</span>\n\n");
+	predefined_templates["low"].push_back("\t");
+	predefined_templates["low"].push_back("<span class=\"comment\">"); // before comment
+	predefined_templates["low"].push_back("</span>\n"); //after comment
+	predefined_templates["low"].push_back("\n"); // after last line @-rule
 
 	whitespace[0] = " "; whitespace[1] = "\n"; whitespace[2] = "\t";
 	whitespace[3] = "\r"; whitespace[4] = 11;

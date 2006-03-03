@@ -56,7 +56,6 @@ class csstidy
 		// Various function to manage the CSS structure
 		void add(const string& media, const string& selector, const string& property, const string& value);
 	    void copy(const string media, const string selector, const string media_new, const string selector_new);
-	    void remove(const string media,const string selector);
 	
 		// Prints CSS code
 		void print_css(string filename = "");

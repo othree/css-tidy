@@ -472,7 +472,7 @@ void csstidy::parse_css(string css_input)
 			{
 				if(j->second.size() == 0)
 				{
-					remove(i->first,j->first);
+					css[i->first].erase(j->first);
 				}
 			}
 		}

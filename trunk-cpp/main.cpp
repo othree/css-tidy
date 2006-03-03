@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 			else if(trim(argv[i]).substr(0,11) == "--template=")
 			{
 				string template_value = trim(argv[i]).substr(11);
-				if(template_value == "high_compression" || template_value == "highest_compression" || template_value == "low_compression")
+				if(template_value == "high" || template_value == "highest" || template_value == "low")
 				{
 					csst.csstemplate = predefined_templates[template_value];
 				}
