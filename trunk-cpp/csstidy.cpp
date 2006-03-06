@@ -38,11 +38,11 @@ csstidy::csstidy()
 	settings["case_properties"] = 0;
 	settings["sort_properties"] = 0;
 	settings["sort_selectors"] = 0;
-	settings["merge_selectors"] = 0;
+	settings["merge_selectors"] = 1;
 	settings["discard_invalid_properties"] = 0;
 	settings["allow_html_in_templates"] = 0;
 	settings["silent"] = 0;
-	settings["preserve_css"] = 1;
+	settings["preserve_css"] = 0;
 	
 	csstemplate.push_back("<span class=\"at\">"); //string before @rule
 	csstemplate.push_back("</span> <span class=\"format\">{</span>\n"); //bracket after @-rule
@@ -80,7 +80,6 @@ void csstidy::copy(const string media, const string selector, const string media
 	}
 }
 
-// Adds a property-value pair to an existing CSS structure
 void csstidy::add(const string& media, const string& selector, const string& property, const string& value)
 {
 	if(settings["preserve_css"]) {

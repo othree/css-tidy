@@ -450,7 +450,7 @@ void csstidy::parse_css(string css_input)
 	{
 		for(css_struct::iterator i = css.begin(); i != css.end(); i++ )
 		{
-				merge_selectors(css[i->first]);
+			merge_selectors(i->second);
 		}
 	}
 	
@@ -458,23 +458,17 @@ void csstidy::parse_css(string css_input)
 	{
 		for(css_struct::iterator i = css.begin(); i != css.end(); ++i )
 		{
-			for(sstore::iterator j = i->second.begin(); j != i->second.end(); ++j)
+			for(sstore::iterator j = i->second.begin(); j != i->second.end();)
 			{
 				merge_4value_shorthands(i->first,j->first);
 				merge_bg(j->second);
-			}
-		}
-
-		// delete empty selectors
-		for(css_struct::iterator i = css.begin(); i != css.end(); ++i )
-		{
-			for(sstore::iterator j = i->second.begin(); j != i->second.end(); ++j)
-			{
-				if(j->second.size() == 0)
-				{
-					css[i->first].erase(j->first);
+				
+				if(j->second.size() == 0) {
+					i->second.erase(j);
+				} else {
+					 ++j;
 				}
-			}
+			}		
 		}
 	}
 }

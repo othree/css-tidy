@@ -22,17 +22,17 @@
 class csstidy 
 { 
 	public: 
-		int properties,selectors,input_size,output_size;
-		string charset,namesp, css_level;
-		vector<string> import, csstemplate;
+		int                        properties,selectors,input_size,output_size;
+		string                     charset,namesp, css_level;
+		vector<string>             import, csstemplate;
 		map<int, vector<message> > logs;
-		map<string, int> settings;
+		map<string, int>           settings;
 	
 	private:
-		css_struct css;
+		css_struct    css;
 		vector<token> csstokens;
-		string tokens;
-		int line;
+		string        tokens;
+		int           line;
 
 		void add_token(const token_type ttype, const string data, const bool force = false);
 		void _convert_raw_css();
@@ -53,7 +53,7 @@ class csstidy
 	public:
 	    csstidy();
 	    	
-		// Various function to manage the CSS structure
+		// Adds a property-value pair to an existing CSS structure
 		void add(const string& media, const string& selector, const string& property, const string& value);
 	    void copy(const string media, const string selector, const string media_new, const string selector_new);
 	
