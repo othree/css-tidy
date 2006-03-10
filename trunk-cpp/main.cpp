@@ -119,6 +119,10 @@ int main(int argc, char *argv[])
 	cout << endl << "Usage:" << endl << endl << "csstidy input_filename [\n";
 	for(map<string,int>::iterator j = csst.settings.begin(); j != csst.settings.end(); ++j )
 	{
+		if (j->first == "optimise_shorthands") {
+			continue;
+		}
+		
 		cout << " --" << j->first;
 		if(j->second == true)
 		{
@@ -129,7 +133,8 @@ int main(int argc, char *argv[])
 			cout << "=[false|true] |\n";
 		}
 	}
-	cout << " --template=[default|filename|low_compression|high_compression|highest_compression] |\n";
+	cout << " --optimise_shorthands=[1|2|0] |\n";
+	cout << " --template=[default|filename|low|high|highest] |\n";
 	cout << " output_filename ]*" << endl;
 	
 	return EXIT_SUCCESS;

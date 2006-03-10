@@ -46,7 +46,7 @@ void csstidy::parse_css(string css_input)
 	bool str_in_str = false;
 	bool invalid_at = false;
 	bool pn = false;
-	
+
 	int str_size = css_input.length();
 	for(int i = 0; i < str_size; ++i)
 	{
@@ -336,7 +336,7 @@ void csstidy::parse_css(string css_input)
 						add_token(VALUE, cur_value);
 							
 						// Further Optimisation
-						if(cur_property == "background" && settings["optimise_shorthands"])
+						if(cur_property == "background" && settings["optimise_shorthands"] > 1)
 						{
 							map<string,string> temp = dissolve_short_bg(cur_value);
 							css[cur_at][cur_selector].erase("background");
@@ -345,7 +345,7 @@ void csstidy::parse_css(string css_input)
 								add(cur_at,cur_selector,it->first,it->second);
 							}
 						}
-						if(shorthands.count(cur_property) > 0 && settings["optimise_shorthands"])
+						if(shorthands.count(cur_property) > 0 && settings["optimise_shorthands"] > 0)
 						{
 							map<string,string> temp = dissolve_4value_shorthands(cur_property,cur_value);
 							for(map<string,string>::iterator it = temp.begin(); it != temp.end(); ++it )
@@ -453,15 +453,17 @@ void csstidy::parse_css(string css_input)
 			merge_selectors(i->second);
 		}
 	}
-	
-	if(settings["optimise_shorthands"])
+
+	if(settings["optimise_shorthands"] > 0)
 	{
 		for(css_struct::iterator i = css.begin(); i != css.end(); ++i )
 		{
 			for(sstore::iterator j = i->second.begin(); j != i->second.end();)
 			{
 				merge_4value_shorthands(i->first,j->first);
-				merge_bg(j->second);
+				if(settings["optimise_shorthands"] > 1) {
+					merge_bg(j->second);
+				}
 				
 				if(j->second.size() == 0) {
 					i->second.erase(j);

@@ -33,7 +33,7 @@ csstidy::csstidy()
 	settings["compress_colors"] = 1;
 	settings["compress_font-weight"] = 1;
 	settings["lowercase_s"] = 0;
-	settings["optimise_shorthands"] = 0;
+	settings["optimise_shorthands"] = 1;
 	settings["remove_last_;"] = 0;
 	settings["case_properties"] = 0;
 	settings["sort_properties"] = 0;
