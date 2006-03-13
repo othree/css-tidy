@@ -109,6 +109,17 @@ void csstidy::print_css(string filename)
 		
 	stringstream output, in_at_out;
 	
+	if (settings["timestamp"]) {
+		  time_t rawtime;
+		  time(&rawtime);
+		  token temp;
+		  temp.data = " CSSTidy ";
+		  temp.data +=  CSSTIDY_VERSION;
+		  temp.data += ": " + rtrim(asctime (localtime ( &rawtime ))) + " ";
+		  temp.type = COMMENT;
+		  csstokens.insert(csstokens.begin(), temp);
+	}
+	
 	if(charset != "")
 	{
 		output << csstemplate[0] << "@charset " << csstemplate[5] << charset << csstemplate[6];

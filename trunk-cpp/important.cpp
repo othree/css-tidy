@@ -19,16 +19,18 @@
 #include "csspp_globals.hpp"
 using namespace std;
 
-extern vector<string> whitespace;
 
 bool is_important(string value)
 {
 	// Remove whitespaces
-	value = strtolower(str_replace(whitespace,"",value));
+	value = rtrim(strtolower(value));
 
-	if(value.length() > 9 && value.substr(value.length()-10,10) == "!important")
+	if(value.length() > 9 && value.substr(value.length()-9,9) == "important")
 	{
-		return true;
+		value = rtrim(value.substr(0,value.length()-9));
+		if(value.substr(value.length()-1,1) == "!") {
+			return true;
+		}
 	}
 	return false;
 }

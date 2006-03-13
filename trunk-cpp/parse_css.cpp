@@ -38,8 +38,9 @@ void csstidy::parse_css(string css_input)
 	css_input = str_replace("\r\n","\n",css_input); // Replace all double-newlines
 	css_input += "\n";
 	parse_status status = is, from;
+	cur_property = ""; // if you can explain the need for this please do so
 
-	string cur_selector,cur_at,cur_property,cur_sub_value,cur_value,temp_add,cur_comment,temp;
+	string temp_add,cur_comment,temp;
 
 	vector<string> cur_sub_value_arr;
 	char str_char;
@@ -151,10 +152,12 @@ void csstidy::parse_css(string css_input)
 					add_token(AT_END, cur_at);
 					cur_at = "";
 					cur_selector = "";
+					sel_separate = vector<int>();
 				}
 				else if(css_input[i] == ',') 
 				{
 					cur_selector = trim(cur_selector) + ",";
+					sel_separate.push_back(cur_selector.length());
 				}
 				else if(css_input[i] == '\\') 
 				{
@@ -191,12 +194,9 @@ void csstidy::parse_css(string css_input)
 				}
 				else if(css_input[i] == '}')
 				{
+					explode_selectors();
 					status = is;
 					invalid_at = false;
-					if(cur_selector[0] != '@' && css.has(cur_at) && !css[cur_at].has(cur_selector) && !settings["preserve_css"])
-					{
-						log("Removed empty selector: " + trim(cur_selector),Information);
-					}
 					add_token(SEL_END, cur_selector);
 					cur_selector = "";
 					cur_property = "";
@@ -218,7 +218,7 @@ void csstidy::parse_css(string css_input)
 			
 			/* Case in-value */
 			case iv:
-			pn = (ctype_space(css_input[i]) && property_is_next(css_input,i+1) || i == str_size-1);
+			pn = ((css_input[i] == '\n' || css_input[i] == '\r') && property_is_next(css_input,i+1) || i == str_size-1);
 			if(pn)
 			{
 				log("Added semicolon to the end of declaration",Warning);
@@ -255,6 +255,7 @@ void csstidy::parse_css(string css_input)
 						cur_sub_value_arr.clear();
 						cur_sub_value = "";
 						cur_selector = "";
+						sel_separate = vector<int>();
 					}
 					else
 					{
@@ -377,6 +378,7 @@ void csstidy::parse_css(string css_input)
 				}
 				if(css_input[i] == '}')
 				{
+					explode_selectors();
 					add_token(SEL_END, cur_selector);
 					status = is;
 					invalid_at = false;
@@ -446,7 +448,7 @@ void csstidy::parse_css(string css_input)
 		}
 	}
 
-	if(settings["merge_selectors"])
+	if(settings["merge_selectors"] > 1)
 	{
 		for(css_struct::iterator i = css.begin(); i != css.end(); i++ )
 		{

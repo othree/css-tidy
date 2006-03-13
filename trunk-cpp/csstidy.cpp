@@ -38,11 +38,12 @@ csstidy::csstidy()
 	settings["case_properties"] = 0;
 	settings["sort_properties"] = 0;
 	settings["sort_selectors"] = 0;
-	settings["merge_selectors"] = 1;
+	settings["merge_selectors"] = 2;
 	settings["discard_invalid_properties"] = 0;
 	settings["allow_html_in_templates"] = 0;
 	settings["silent"] = 0;
 	settings["preserve_css"] = 0;
+	settings["timestamp"] = 0;
 	
 	csstemplate.push_back("<span class=\"at\">"); //string before @rule
 	csstemplate.push_back("</span> <span class=\"format\">{</span>\n"); //bracket after @-rule
@@ -251,4 +252,38 @@ map<string,string> csstidy::dissolve_4value_shorthands(string property, string v
 	}
 	
 	return ret;
+}
+
+void csstidy::explode_selectors()
+{
+	// Explode multiple selectors
+    if (settings["merge_selectors"] == 1)
+    {
+        vector<string> new_sels;
+        int lastpos = 0;
+        sel_separate.push_back(cur_selector.length());
+        
+        for (int i = 0; i < sel_separate.size(); ++i)
+        {
+            if (i == sel_separate.size()-1) {
+                sel_separate[i] += 1;
+            }
+            
+            new_sels.push_back(cur_selector.substr(lastpos,sel_separate[i]-lastpos-1));
+            lastpos = sel_separate[i];
+        }
+ 
+        if (new_sels.size() > 1)
+        {
+            for (int i = 0; i < new_sels.size(); ++i)
+            {
+				for (pstore::iterator j = css[cur_at][cur_selector].begin(); j != css[cur_at][cur_selector].end(); ++j)
+				{
+            		add(cur_at, new_sels[i], j->first, j->second);
+				}
+            }
+            css[cur_at].erase(cur_selector);
+        }
+    }
+    sel_separate = vector<int>();
 }

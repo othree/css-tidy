@@ -31,8 +31,9 @@ class csstidy
 	private:
 		css_struct    css;
 		vector<token> csstokens;
-		string        tokens;
+		string        tokens, cur_selector, cur_at, cur_property, cur_sub_value, cur_value;
 		int           line;
+		vector<int>   sel_separate;
 
 		void add_token(const token_type ttype, const string data, const bool force = false);
 		void _convert_raw_css();
@@ -43,6 +44,7 @@ class csstidy
 		int _seeknocomment(const int key, const int move);
 		string _htmlsp(const string istring, const bool plain);	
 		string optimise_subvalue(string subvalue, const string property);
+		void explode_selectors();
 		
 		// Parses unicode notations
 		string unicode(string& istring,int& i);

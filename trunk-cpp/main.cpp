@@ -22,11 +22,57 @@ using namespace std;
 
 #include "prepare.hpp"
 
-extern map<string, vector<string> > predefined_templates;
+map< string, vector<string> > predefined_templates;
+
 
 int main(int argc, char *argv[])
 {
 	prepare();
+	predefined_templates["high"].push_back("<span class=\"at\">");
+	predefined_templates["high"].push_back("</span> <span class=\"format\">{</span>\n");
+	predefined_templates["high"].push_back("<span class=\"selector\">");
+	predefined_templates["high"].push_back("</span><span class=\"format\">{</span>");
+	predefined_templates["high"].push_back("<span class=\"property\">");
+	predefined_templates["high"].push_back("</span><span class=\"value\">");
+	predefined_templates["high"].push_back("</span><span class=\"format\">;</span>");
+	predefined_templates["high"].push_back("<span class=\"format\">}</span>");
+	predefined_templates["high"].push_back("\n");
+	predefined_templates["high"].push_back("\n<span class=\"format\">}\n</span>");
+	predefined_templates["high"].push_back("");
+	predefined_templates["high"].push_back("<span class=\"comment\">"); // before comment
+	predefined_templates["high"].push_back("</span>"); //after comment
+	predefined_templates["high"].push_back("\n"); // after last line @-rule
+	
+	predefined_templates["highest"].push_back("<span class=\"at\">");
+	predefined_templates["highest"].push_back("</span><span class=\"format\">{</span>");
+	predefined_templates["highest"].push_back("<span class=\"selector\">");
+	predefined_templates["highest"].push_back("</span><span class=\"format\">{</span>");
+	predefined_templates["highest"].push_back("<span class=\"property\">");
+	predefined_templates["highest"].push_back("</span><span class=\"value\">");
+	predefined_templates["highest"].push_back("</span><span class=\"format\">;</span>");
+	predefined_templates["highest"].push_back("<span class=\"format\">}</span>");
+	predefined_templates["highest"].push_back("");
+	predefined_templates["highest"].push_back("<span class=\"format\">}</span>");
+	predefined_templates["highest"].push_back("");
+	predefined_templates["highest"].push_back("<span class=\"comment\">"); // before comment
+	predefined_templates["highest"].push_back("</span>"); //after comment
+	predefined_templates["highest"].push_back(""); // after last line @-rule
+		
+	predefined_templates["low"].push_back("<span class=\"at\">");
+	predefined_templates["low"].push_back("</span> <span class=\"format\">{</span>\n");
+	predefined_templates["low"].push_back("<span class=\"selector\">");
+	predefined_templates["low"].push_back("</span>\n<span class=\"format\">{</span>\n");
+	predefined_templates["low"].push_back("\t<span class=\"property\">");
+	predefined_templates["low"].push_back("</span><span class=\"value\">");
+	predefined_templates["low"].push_back("</span><span class=\"format\">;</span>\n");
+	predefined_templates["low"].push_back("<span class=\"format\">}</span>");
+	predefined_templates["low"].push_back("\n\n");
+	predefined_templates["low"].push_back("\n<span class=\"format\">}</span>\n\n");
+	predefined_templates["low"].push_back("\t");
+	predefined_templates["low"].push_back("<span class=\"comment\">"); // before comment
+	predefined_templates["low"].push_back("</span>\n"); //after comment
+	predefined_templates["low"].push_back("\n"); // after last line @-rule
+	
 	csstidy csst;
 
 	if(argc > 1)
@@ -119,7 +165,7 @@ int main(int argc, char *argv[])
 	cout << endl << "Usage:" << endl << endl << "csstidy input_filename [\n";
 	for(map<string,int>::iterator j = csst.settings.begin(); j != csst.settings.end(); ++j )
 	{
-		if (j->first == "optimise_shorthands") {
+		if (j->first == "optimise_shorthands" || j->first == "merge_selectors") {
 			continue;
 		}
 		
@@ -133,6 +179,7 @@ int main(int argc, char *argv[])
 			cout << "=[false|true] |\n";
 		}
 	}
+	cout << " --merge_selectors=[2|1|0] |\n";
 	cout << " --optimise_shorthands=[1|2|0] |\n";
 	cout << " --template=[default|filename|low|high|highest] |\n";
 	cout << " output_filename ]*" << endl;
