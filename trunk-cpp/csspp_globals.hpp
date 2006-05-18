@@ -16,7 +16,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
  
-#define CSSTIDY_VERSION "1.2beta"
+#define CSSTIDY_VERSION "1.2"
 #include <cstdlib>
 #include <string> 
 #include <iterator>

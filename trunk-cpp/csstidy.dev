@@ -41,20 +41,20 @@ BuildCmd=
 
 [VersionInfo]
 Major=1
-Minor=1
+Minor=2
 Release=0
-Build=2225
+Build=2229
 LanguageID=2057
 CharsetID=1252
 CompanyName=
-FileVersion=1.1
+FileVersion=1.2
 FileDescription=CSS Parser and Optimiser
 InternalName=
 LegalCopyright=
 LegalTrademarks=
 OriginalFilename=
 ProductName=CSSTidy
-ProductVersion=1.1
+ProductVersion=1.2
 AutoIncBuildNr=1
 
 [Unit2]

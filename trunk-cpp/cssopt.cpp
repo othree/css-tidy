@@ -184,14 +184,14 @@ string cut_color(string color)
 
 	if(color.length() == 7)
 	{
-		string color_temp = strtolower(color);
+		string color_temp = strtoupper(color);
 
 		if(color_temp[0] == '#' && color_temp[1] == color_temp[2] && color_temp[3] == color_temp[4] && color_temp[5] == color_temp[6])
 		{
 			color = "#";
-			color += color[2];
-			color += color[3];
-			color += color[5];
+			color += color_temp[2];
+			color += color_temp[3];
+			color += color_temp[5];
 		}
 	}
 
