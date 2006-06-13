@@ -165,7 +165,8 @@ int main(int argc, char *argv[])
 	cout << endl << "Usage:" << endl << endl << "csstidy input_filename [\n";
 	for(map<string,int>::iterator j = csst.settings.begin(); j != csst.settings.end(); ++j )
 	{
-		if (j->first == "optimise_shorthands" || j->first == "merge_selectors") {
+		if (j->first == "optimise_shorthands" || j->first == "merge_selectors"
+		   || j->first == "case_properties") {
 			continue;
 		}
 		
@@ -180,6 +181,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	cout << " --merge_selectors=[2|1|0] |\n";
+	cout << " --case_properties=[0|1|2] |\n";
 	cout << " --optimise_shorthands=[1|2|0] |\n";
 	cout << " --template=[default|filename|low|high|highest] |\n";
 	cout << " output_filename ]*" << endl;
