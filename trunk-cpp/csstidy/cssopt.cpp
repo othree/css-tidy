@@ -129,6 +129,14 @@ string compress_numbers(string subvalue, string property)
 			{
 				temp[i] = f2str(str2f(temp[i]));
 			}
+			// Remove leading zero
+            if (abs( (int) str2f(temp[i])) < 1) {
+                if (str2f(temp[i]) < 0) {
+                    temp[i] = '-' + temp[i].substr(2);
+                } else {
+                    temp[i] = temp[i].substr(1);
+                }
+            }     
 		}
 	}
 	return (temp.size() > 1) ? temp[0] + "/" + temp[1] : temp[0];
