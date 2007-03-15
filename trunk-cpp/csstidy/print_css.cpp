@@ -15,7 +15,7 @@
  * along with CSSTidy; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
- 
+
 #include "csspp_globals.hpp"
 
 using namespace std;
@@ -31,30 +31,28 @@ string csstidy::_htmlsp(const string istring, const bool plain)
 void csstidy::_convert_raw_css()
 {
 	csstokens = vector<token>();
-	
-	css.sort();
-        
+
     for (css_struct::iterator i = css.begin(); i != css.end(); ++i)
     {
         if (settings["sort_selectors"]) i->second.sort();
         if (i->first != "standard") {
             add_token(AT_START, i->first, true);
         }
-        
+
         for(sstore::iterator j = i->second.begin(); j != i->second.end(); ++j)
         {
             if (settings["sort_properties"]) j->second.sort();
             add_token(SEL_START, j->first, true);
-            
+
             for(umap<string,string>::iterator k = j->second.begin(); k != j->second.end(); ++k)
             {
                 add_token(PROPERTY, k->first, true);
                 add_token(VALUE, k->second, true);
             }
-            
+
             add_token(SEL_END, j->first, true);
         }
-        
+
         if (i->first != "standard") {
             add_token(AT_END, i->first, true);
         }
@@ -94,7 +92,7 @@ void csstidy::print_css(string filename)
 			return;
 		}
 	}
-	
+
 	if(!settings["preserve_css"]) {
 		_convert_raw_css();
 	}
@@ -106,9 +104,9 @@ void csstidy::print_css(string filename)
 			csstemplate[i] = strip_tags(csstemplate[i]);
 		}
 	}
-		
+
 	stringstream output, in_at_out;
-	
+
 	if (settings["timestamp"]) {
 		  time_t rawtime;
 		  time(&rawtime);
@@ -119,12 +117,12 @@ void csstidy::print_css(string filename)
 		  temp.type = COMMENT;
 		  csstokens.insert(csstokens.begin(), temp);
 	}
-	
+
 	if(charset != "")
 	{
 		output << csstemplate[0] << "@charset " << csstemplate[5] << charset << csstemplate[6];
 	}
-	
+
 	if(import.size() > 0)
 	{
 		for(int i = 0; i < import.size(); i ++)
@@ -132,15 +130,15 @@ void csstidy::print_css(string filename)
 			output  << csstemplate[0] << "@import " << csstemplate[5] << import[i] << csstemplate[6];
 		}
 	}
-	
+
 	if(namesp != "")
 	{
 		output << csstemplate[0] << "@namespace " << csstemplate[5] << namesp << csstemplate[6];
 	}
-	
+
 	output << csstemplate[13];
 	stringstream* out =& output;
-	   
+
     bool plain = !settings["allow_html_in_templates"];
 
     for (int i = 0; i < csstokens.size(); ++i)
@@ -151,19 +149,19 @@ void csstidy::print_css(string filename)
                 *out << csstemplate[0] << _htmlsp(csstokens[i].data, plain) + csstemplate[1];
                 out =& in_at_out;
                 break;
-            
+
             case SEL_START:
                 if(settings["lowercase_s"]) csstokens[i].data = strtolower(csstokens[i].data);
                 *out << ((csstokens[i].data[0] != '@') ? csstemplate[2] + _htmlsp(csstokens[i].data, plain) : csstemplate[0] + _htmlsp(csstokens[i].data, plain));
                 *out << csstemplate[3];
                 break;
-                
+
             case PROPERTY:
                 if(settings["case_properties"] == 2) csstokens[i].data = strtoupper(csstokens[i].data);
                 if(settings["case_properties"] == 1) csstokens[i].data = strtolower(csstokens[i].data);
                 *out << csstemplate[4] << _htmlsp(csstokens[i].data, plain) << ":" << csstemplate[5];
                 break;
-            
+
             case VALUE:
                 *out << _htmlsp(csstokens[i].data, plain);
                 if(_seeknocomment(i, 1) == SEL_END && settings["remove_last_;"]) {
@@ -172,12 +170,12 @@ void csstidy::print_css(string filename)
                     *out << csstemplate[6];
                 }
                 break;
-            
+
             case SEL_END:
                 *out << csstemplate[7];
                 if(_seeknocomment(i, 1) != AT_END) *out << csstemplate[8];
                 break;
-            
+
             case AT_END:
 				out =& output;
             	*out << csstemplate[10] << str_replace("\n", "\n" + csstemplate[10], in_at_out.str());
@@ -190,9 +188,9 @@ void csstidy::print_css(string filename)
                 break;
         }
     }
-        
+
 	string output_string = trim(output.str());
-		
+
 	if(!settings["silent"]) {
 		cout << endl << "Selectors: " << selectors << " | Properties: " << properties << endl;
 		float ratio = round(((input_size - (float) output_string.length())/input_size)*100,2);
@@ -200,7 +198,7 @@ void csstidy::print_css(string filename)
 		float o_b = round(((float) output_string.length())/1024,3);
 		cout << "Input size: " << i_b << "KiB  Output size: " << o_b << "KiB  Compression ratio: " << ratio << "%" << endl;
 	}
-	
+
 	if(filename == "")
 	{
 		if(!settings["silent"]) cout << "-----------------------------------\n\n";
@@ -209,8 +207,8 @@ void csstidy::print_css(string filename)
 	else
 	{
 		file_output << output_string;
-	}	
-	
+	}
+
 	if(logs.size() > 0 && !settings["silent"])
 	{
 		cout << "-----------------------------------\n\n";
