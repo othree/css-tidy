@@ -19,7 +19,7 @@
 #include "csspp_globals.hpp"
 using namespace std;
 
-extern vector<string> number_values,color_values;
+extern vector<string> unit_values,color_values;
 extern map<string,string> replace_colors,all_properties;
 
 string shorthand(string value)
@@ -120,7 +120,7 @@ string compress_numbers(string subvalue, string property)
 					break;
 				}
 			}
-			if(!unit_found && !in_str_array(number_values,property))
+			if(!unit_found && in_str_array(unit_values,property))
 			{
 				temp[i] = f2str(str2f(temp[i]));
 				temp[i] += "px";

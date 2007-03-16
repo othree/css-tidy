@@ -15,32 +15,57 @@
  * along with CSSTidy; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
- 
+
 #include "csspp_globals.hpp"
 
 map<string,bool> settings;
 map< string, vector<string> > shorthands;
 map<string,string> background_prop_default,replace_colors,all_properties;
-vector<string> number_values,color_values;
+vector<string> unit_values,color_values;
 map<string,parse_status> at_rules;
 
 void prepare()
 {
-	number_values.push_back("line-height");
-	number_values.push_back("pitch-range");
-	number_values.push_back("richness");
-	number_values.push_back("speech-rate");
-	number_values.push_back("stress");
-	number_values.push_back("volume");
-	number_values.push_back("font");
-	number_values.push_back("font-weight");
-	number_values.push_back("z-index");
-	number_values.push_back("counter-increment");
-	number_values.push_back("counter-reset");
-	number_values.push_back("orphans");
-	number_values.push_back("widows");
+    unit_values.push_back("background");
+    unit_values.push_back("background-position");
+    unit_values.push_back("border");
+    unit_values.push_back("border-top");
+    unit_values.push_back("border-right");
+    unit_values.push_back("border-bottom");
+    unit_values.push_back("border-left");
+    unit_values.push_back("border-width");
+    unit_values.push_back("border-top-width");
+    unit_values.push_back("border-right-width");
+    unit_values.push_back("border-left-width");
+    unit_values.push_back("border-bottom-width");
+    unit_values.push_back("bottom");
+    unit_values.push_back("border-spacing");
+    unit_values.push_back("font-size");
+    unit_values.push_back("height");
+    unit_values.push_back("left");
+    unit_values.push_back("margin");
+    unit_values.push_back("margin-top");
+    unit_values.push_back("margin-right");
+    unit_values.push_back("margin-bottom");
+    unit_values.push_back("margin-left");
+    unit_values.push_back("max-height");
+    unit_values.push_back("max-width");
+    unit_values.push_back("min-height");
+    unit_values.push_back("min-width");
+    unit_values.push_back("outline-width");
+    unit_values.push_back("padding");
+    unit_values.push_back("padding-top");
+    unit_values.push_back("padding-right");
+    unit_values.push_back("padding-bottom");
+    unit_values.push_back("padding-left");
+    unit_values.push_back("position");
+    unit_values.push_back("right");
+    unit_values.push_back("top");
+    unit_values.push_back("text-indent");
+    unit_values.push_back("letter-spacing");
+    unit_values.push_back("word-spacing");
+    unit_values.push_back("width");
 
-	
 	color_values.push_back("color");
 	color_values.push_back("background-color");
 	color_values.push_back("border-color");
@@ -178,7 +203,7 @@ void prepare()
 	replace_colors["wheat"] = "#F5DEB3";
 	replace_colors["whitesmoke"] = "#F5F5F5";
 	replace_colors["yellowgreen"] = "#9ACD32";
-		
+
 	shorthands["border-color"].push_back("border-top-color");
 	shorthands["border-color"].push_back("border-right-color");
 	shorthands["border-color"].push_back("border-bottom-color");
@@ -200,7 +225,7 @@ void prepare()
 	shorthands["padding"].push_back("padding-bottom");
 	shorthands["padding"].push_back("padding-left");
 	shorthands["-moz-border-radius"].push_back("0");
-	
+
 	all_properties["background"] = "CSS1.0,CSS2.0,CSS2.1";
 	all_properties["background-color"] = "CSS1.0,CSS2.0,CSS2.1";
 	all_properties["background-image"] = "CSS1.0,CSS2.0,CSS2.1";
@@ -324,7 +349,7 @@ void prepare()
 	all_properties["richness"] = "CSS2.0,CSS2.1";
 	all_properties["speak-punctuation"] = "CSS2.0,CSS2.1";
 	all_properties["speak-numeral"] = "CSS2.0,CSS2.1";
-	
+
 	background_prop_default["background-image"] = "none";
 	background_prop_default["background-size"] = "auto";
 	background_prop_default["background-repeat"] = "repeat";
@@ -333,7 +358,7 @@ void prepare()
 	background_prop_default["background-clip"] = "border";
 	background_prop_default["background-origin"] = "padding";
 	background_prop_default["background-color"] = "transparent";
-	
+
 	at_rules["page"] = is;
 	at_rules["font-face"] = is;
 	at_rules["charset"] = iv;

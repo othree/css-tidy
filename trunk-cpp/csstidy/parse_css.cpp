@@ -15,7 +15,7 @@
  * along with CSSTidy; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
- 
+
 #include "csspp_globals.hpp"
 
 using namespace std;
@@ -55,7 +55,7 @@ void csstidy::parse_css(string css_input)
 		{
 			++line;
 		}
-		
+
 		switch(status)
 		{
 			/* Case in-at-block */
@@ -76,7 +76,7 @@ void csstidy::parse_css(string css_input)
 				{
 					cur_at += trim(cur_at) + ",";
 				}
-				else if(css_input[i] == '\\') 
+				else if(css_input[i] == '\\')
 				{
 					cur_at += unicode(css_input,i);
 				}
@@ -90,7 +90,7 @@ void csstidy::parse_css(string css_input)
 				}
 			}
 			break;
-			
+
 			/* Case in-selector */
 			case is:
 			if(is_token(css_input,i))
@@ -154,12 +154,12 @@ void csstidy::parse_css(string css_input)
 					cur_selector = "";
 					sel_separate = vector<int>();
 				}
-				else if(css_input[i] == ',') 
+				else if(css_input[i] == ',')
 				{
 					cur_selector = trim(cur_selector) + ",";
 					sel_separate.push_back(cur_selector.length());
 				}
-				else if(css_input[i] == '\\') 
+				else if(css_input[i] == '\\')
 				{
 					cur_selector += unicode(css_input,i);
 				}
@@ -174,7 +174,7 @@ void csstidy::parse_css(string css_input)
 				}
 			}
 			break;
-			
+
 			/* Case in-property */
 			case ip:
 			if(is_token(css_input,i))
@@ -182,8 +182,9 @@ void csstidy::parse_css(string css_input)
 				if(css_input[i] == ':' || css_input[i] == '=' && cur_property != "") // IE really accepts =, so csstidy will fix those mistakes
 				{
 					status = iv;
-					bool valid = (all_properties.count(cur_property) > 0 && all_properties[cur_property].find(css_level,0) != string::npos);
-					if(valid || !settings["discard_invalid_properties"]) {
+					bool valid = !settings["discard_invalid_properties"] ||
+                                    (all_properties.count(cur_property) > 0 && all_properties[cur_property].find(css_level,0) != string::npos);
+					if(valid) {
 						add_token(PROPERTY, cur_property);
 					}
 				}
@@ -205,7 +206,7 @@ void csstidy::parse_css(string css_input)
 				{
 					cur_property = "";
 				}
-				else if(css_input[i] == '\\') 
+				else if(css_input[i] == '\\')
 				{
 					cur_property += unicode(css_input,i);
 				}
@@ -215,7 +216,7 @@ void csstidy::parse_css(string css_input)
 				cur_property += css_input[i];
 			}
 			break;
-			
+
 			/* Case in-value */
 			case iv:
 			pn = ((css_input[i] == '\n' || css_input[i] == '\r') && property_is_next(css_input,i+1) || i == str_size-1);
@@ -237,7 +238,7 @@ void csstidy::parse_css(string css_input)
 					status = instr;
 					from = iv;
 				}
-				else if(css_input[i] == '\\') 
+				else if(css_input[i] == '\\')
 				{
 					cur_sub_value += unicode(css_input,i);
 				}
@@ -247,11 +248,11 @@ void csstidy::parse_css(string css_input)
 					{
 						cur_sub_value_arr.push_back(trim(cur_sub_value));
 						status = is;
-						
+
 						if(cur_selector == "@charset") charset = cur_sub_value_arr[0];
 						if(cur_selector == "@namespace") namesp = implode(" ",cur_sub_value_arr);
 						if(cur_selector == "@import") import.push_back(implode(" ",cur_sub_value_arr));
-		
+
 						cur_sub_value_arr.clear();
 						cur_sub_value = "";
 						cur_selector = "";
@@ -269,34 +270,34 @@ void csstidy::parse_css(string css_input)
 				if( (css_input[i] == '}' || css_input[i] == ';' || pn) && !cur_selector.empty())
 				{
 					++properties;
-					
+
 					if(cur_at == "")
 					{
 						cur_at = "standard";
 					}
-	
+
 					// Kill all whitespace
 					cur_at = trim(cur_at); cur_selector = trim(cur_selector);
 					cur_value = trim(cur_value); cur_property = trim(cur_property);
 					cur_sub_value = trim(cur_sub_value);
-					
+
 					// case settings
 					if(settings["lowercase_s"])
 					{
 						cur_selector = strtolower(cur_selector);
 					}
 					cur_property = strtolower(cur_property);
-					
-					
+
+
 					if(cur_sub_value != "")
 					{
 						cur_sub_value = optimise_subvalue(cur_sub_value,cur_property);
 						cur_sub_value_arr.push_back(cur_sub_value);
 						cur_sub_value = "";
 					}
-	
+
 					cur_value = implode(" ",cur_sub_value_arr);
-					
+
 					// Compress !important
 					temp = c_important(cur_value);
 					if(temp != cur_value)
@@ -304,7 +305,7 @@ void csstidy::parse_css(string css_input)
 						log("Optimised !important",Information);
 					}
 					cur_value = temp;
-					
+
 					// Optimise shorthand properties
 					if(shorthands.count(cur_property) > 0)
 					{
@@ -315,7 +316,7 @@ void csstidy::parse_css(string css_input)
 						}
 						cur_value = temp;
 					}
-					
+
 					// Compress font-weight (tiny compression)
 					if(cur_property == "font-weight" && settings["compress_font-weight"])
 					{
@@ -329,13 +330,13 @@ void csstidy::parse_css(string css_input)
 							log("Optimised font-weight: Changed \"normal\" to \"400\"",Information);
 						}
 					}
-					
+
 					bool valid = (all_properties.count(cur_property) > 0 && all_properties[cur_property].find(css_level,0) != string::npos);
 					if((!invalid_at || settings["preserve_css"]) && (!settings["discard_invalid_properties"] || valid))
 					{
 						add(cur_at,cur_selector,cur_property,cur_value);
 						add_token(VALUE, cur_value);
-							
+
 						// Further Optimisation
 						if(cur_property == "background" && settings["optimise_shorthands"] > 1)
 						{
@@ -370,8 +371,8 @@ void csstidy::parse_css(string css_input)
 							log("Invalid property in " + strtoupper(css_level) + ": " + cur_property,Warning);
 						}
 					}
-					
-					//Split multiple selectors here if necessary								
+
+					//Split multiple selectors here if necessary
 					cur_property = "";
 					cur_sub_value_arr.clear();
 					cur_value = "";
@@ -388,7 +389,7 @@ void csstidy::parse_css(string css_input)
 			else if(!pn)
 			{
 				cur_sub_value += css_input[i];
-			
+
 				if(ctype_space(css_input[i]))
 				{
 					if(trim(cur_sub_value) != "")
@@ -400,7 +401,7 @@ void csstidy::parse_css(string css_input)
 				}
 			}
 			break;
-			
+
 			/* Case in-string */
 			case instr:
 			if(str_char == ')' && css_input[i] == '"' && str_in_str == false && !escaped(css_input,i))
@@ -430,7 +431,7 @@ void csstidy::parse_css(string css_input)
 				cur_selector += temp_add;
 			}
 			break;
-			
+
 			/* Case in-comment */
 			case ic:
 			if(css_input[i] == '*' && s_at(css_input,i+1) == '/')
@@ -466,13 +467,13 @@ void csstidy::parse_css(string css_input)
 				if(settings["optimise_shorthands"] > 1) {
 					merge_bg(j->second);
 				}
-				
+
 				if(j->second.size() == 0) {
 					i->second.erase(j);
 				} else {
 					 ++j;
 				}
-			}		
+			}
 		}
 	}
 }
