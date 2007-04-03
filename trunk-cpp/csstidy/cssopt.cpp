@@ -29,7 +29,7 @@ string shorthand(string value)
 	if(is_important(value))
 	{
 		value = gvw_important(value);
-		important = " !important";
+		important = "!important";
 	}
 	
 	vector<string> values = explode(" ",value);
@@ -229,7 +229,7 @@ int c_font_weight(string& value)
 	string important = "";
 	if(is_important(value))
 	{
-		important = " !important";
+		important = "!important";
 		value = gvw_important(value);
 	}
 	if(value == "bold")

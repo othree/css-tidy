@@ -15,7 +15,7 @@
  * along with CSSTidy; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
- 
+
 #include "csspp_globals.hpp"
 using namespace std;
 
@@ -53,7 +53,7 @@ string c_important(string value)
 {
 	if(is_important(value))
 	{
-		value = gvw_important(value) + " !important";
+		value = gvw_important(value) + "!important";
 	}
 	return value;
 }

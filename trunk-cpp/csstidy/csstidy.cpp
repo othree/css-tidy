@@ -189,7 +189,7 @@ void csstidy::merge_4value_shorthands(string media, string selector)
 				string val = css[media][selector][i->second[j]];
 				if(is_important(val))
 				{
-					important = " !important";
+					important = "!important";
 					temp += gvw_important(val)+ " ";
 				}
 				else
@@ -218,7 +218,7 @@ map<string,string> csstidy::dissolve_4value_shorthands(string property, string v
 	if(is_important(value))
 	{
 		value = gvw_important(value);
-		important = " !important";
+		important = "!important";
 	}
 	vector<string> values = explode(" ",value);
 

@@ -45,7 +45,7 @@ map<string,string> dissolve_short_bg(string istring)
 	
 	if(is_important(istring))
 	{
-		important = " !important";
+		important = "!important";
 		istring = gvw_important(istring);
 	}
 	
@@ -199,7 +199,7 @@ void merge_bg(umap<string,string>& css_input)
 			// Remove !important
 			if(is_important(cur_value))
 			{
-				important = " !important";
+				important = "!important";
 				cur_value = gvw_important(cur_value);
 			}
 			

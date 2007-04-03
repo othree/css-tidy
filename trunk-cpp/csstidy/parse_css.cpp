@@ -481,6 +481,13 @@ void csstidy::parse_css(string css_input)
 string csstidy::optimise_subvalue(string subvalue, const string property)
 {
 	subvalue = trim(subvalue);
+    string important = "";
+    if (is_important(subvalue))
+    {
+        important = "!important";
+    }
+    subvalue = gvw_important(subvalue);
+
 	string temp = compress_numbers(subvalue,property);
 	if(temp != subvalue)
 	{
@@ -510,5 +517,5 @@ string csstidy::optimise_subvalue(string subvalue, const string property)
 			subvalue = temp;
 		}
 	}
-	return subvalue;
+	return subvalue + important;
 }
