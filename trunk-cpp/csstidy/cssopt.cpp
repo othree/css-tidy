@@ -138,8 +138,9 @@ string compress_numbers(string subvalue, string property)
                 }
             }     
 		}
-	}
-	return (temp.size() > 1) ? temp[0] + "/" + temp[1] : temp[0];
+	}	
+		
+	return (temp.size() > 1) ? temp[0] + "/" + temp[1] : ((temp.size() > 0) ? temp[0] : "");
 }
 
 bool property_is_next(string istring, int pos)
