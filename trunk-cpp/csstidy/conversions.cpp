@@ -148,8 +148,16 @@ double hexdec(string istring)
 string f2str(const float f)
 {
 	stringstream sstream;
+	sstream.flags (ios::fixed);
 	sstream << f;
-	return sstream.str();
+	string converted = sstream.str();
+	// now strip remaining zeros at the end
+	std::string::size_type last = converted.find_last_not_of("0"); /// must succeed
+	converted = converted.substr( 0, last + 1);
+	// and the dot if no zeros remain
+	last = converted.find_last_not_of("."); /// must succeed
+	converted = converted.substr( 0, last + 1);
+	return converted;
 }
 
 float str2f(const string istring)
