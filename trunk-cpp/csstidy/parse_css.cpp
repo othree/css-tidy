@@ -74,7 +74,7 @@ void csstidy::parse_css(string css_input)
 				}
 				else if(css_input[i] == ',')
 				{
-					cur_at += trim(cur_at) + ",";
+					cur_at = trim(cur_at) + ",";
 				}
 				else if(css_input[i] == '\\')
 				{
