@@ -163,7 +163,11 @@ void csstidy::parse_css(string css_input)
 				{
 					cur_selector += unicode(css_input,i);
 				}
-				else cur_selector += css_input[i];
+				// remove unnecessary universal selector,  FS#147
+				else if(!(css_input[i] == '*' && (s_at(css_input,i+1) == '.' || s_at(css_input,i+1) == '[' || s_at(css_input,i+1) == ':' || s_at(css_input,i+1) == '#')))
+				{
+					cur_selector += css_input[i];
+				}
 			}
 			else
 			{
