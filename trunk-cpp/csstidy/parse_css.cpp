@@ -38,7 +38,7 @@ void csstidy::parse_css(string css_input)
 	css_input = str_replace("\r\n","\n",css_input); // Replace all double-newlines
 	css_input += "\n";
 	parse_status status = is, from;
-	cur_property = ""; // if you can explain the need for this please do so
+	cur_property = "";
 
 	string temp_add,cur_comment,temp;
 
@@ -131,7 +131,7 @@ void csstidy::parse_css(string css_input)
 				}
 				else if(css_input[i] == '"' || css_input[i] == '\'')
 				{
-					cur_selector += css_input[i];
+					cur_string = css_input[i];
 					status = instr;
 					str_char = css_input[i];
 					from = is;
@@ -237,8 +237,8 @@ void csstidy::parse_css(string css_input)
 				}
 				else if(css_input[i] == '"' || css_input[i] == '\'' || css_input[i] == '(')
 				{
-					cur_sub_value += css_input[i];
 					str_char = (css_input[i] == '(') ? ')' : css_input[i];
+					cur_string = css_input[i];
 					status = instr;
 					from = iv;
 				}
@@ -413,17 +413,13 @@ void csstidy::parse_css(string css_input)
 
 			/* Case in-string */
 			case instr:
-			if(str_char == ')' && css_input[i] == '"' && str_in_str == false && !escaped(css_input,i))
+			if(str_char == ')' && (css_input[i] == '"' || css_input[i] == '\'') && str_in_str == false && !escaped(css_input,i))
 			{
 				str_in_str = true;
 			}
-			else if(str_char == ')' && css_input[i] == '"' && str_in_str == true && !escaped(css_input,i))
+			else if(str_char == ')' && (css_input[i] == '"' || css_input[i] == '\'') && str_in_str == true && !escaped(css_input,i))
 			{
 				str_in_str = false;
-			}
-			if(css_input[i] == str_char && !escaped(css_input,i) && str_in_str == false)
-			{
-				status = from;
 			}
 			temp_add = ""; temp_add += css_input[i];
 			if( (css_input[i] == '\n' || css_input[i] == '\r') && !(css_input[i-1] == '\\' && !escaped(css_input,i-1)) )
@@ -431,14 +427,29 @@ void csstidy::parse_css(string css_input)
 				temp_add = "\\A ";
 				log("Fixed incorrect newline in string",Warning);
 			}
-			if(from == iv)
-			{
-				cur_sub_value += temp_add;
+			if (!(str_char == ')' && char2str(css_input[i]).find_first_of(" \n\t\r\0xb") != string::npos && !str_in_str)) {
+				cur_string += temp_add;
 			}
-			else if(from == is)
+			if(css_input[i] == str_char && !escaped(css_input,i) && str_in_str == false)
 			{
-				cur_selector += temp_add;
+				status = from;
+				if (cur_string.find_first_of(" \n\t\r\0xb") == string::npos) {
+					if (str_char == '"' || str_char == '\'') {
+						cur_string = cur_string.substr(1, cur_string.length() - 2);
+					} else if (cur_string.length() > 3 && (cur_string[1] == '"' || cur_string[1] == '\'')) /* () */ {
+						cur_string = cur_string[0] + cur_string.substr(2, cur_string.length() - 4) + cur_string[cur_string.length()-1];
+					}
+				}
+				if(from == iv)
+				{
+					cur_sub_value += cur_string;
+				}
+				else if(from == is)
+				{
+					cur_selector += cur_string;
+				}
 			}
+			
 			break;
 
 			/* Case in-comment */

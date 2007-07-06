@@ -31,7 +31,7 @@ class csstidy
 	private:
 		css_struct    css;
 		vector<token> csstokens;
-		string        tokens, cur_selector, cur_at, cur_property, cur_sub_value, cur_value;
+		string        tokens, cur_selector, cur_at, cur_property, cur_sub_value, cur_value, cur_string;
 		int           line;
 		vector<int>   sel_separate;
 
