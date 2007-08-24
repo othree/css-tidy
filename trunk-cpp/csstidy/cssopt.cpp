@@ -80,7 +80,7 @@ string shorthand(string value)
 string compress_numbers(string subvalue, string property)
 {
 	string units[] = {"in", "cm", "mm", "pt", "pc", "px", "rem", "%", "ex", "gd", "em", "vw", "vh",
-	                  "vm", "deg", "grad", "rad", "ms", "s", "khz", "hz" }; // sync  for loop
+	                  "vm", "ch", "deg", "grad", "rad", "turn", "ms", "s", "khz", "hz" }; // sync  for loop
 	           
 	vector<string> temp;
 	if(property == "font")
@@ -208,9 +208,9 @@ string cut_color(string color)
 	string temp = strtolower(color);
 	/* color name -> hex code */
 	if(temp == "black")		return "#000";
-	if(temp == "fuchsia")	return "#F0F";
-	if(temp == "white")		return "#FFF";
-	if(temp == "yellow")	return "#FF0";		
+	if(temp == "fuchsia")	return "#f0f";
+	if(temp == "white")		return "#fff";
+	if(temp == "yellow")	return "#ff0";		
 	/* hex code -> color name */
 	if(temp == "#800000")	return "maroon";
 	if(temp == "#ffa500")	return "orange";
