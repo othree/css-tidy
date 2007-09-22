@@ -79,8 +79,7 @@ void csstidy::print_css(string filename)
 {
 	if(css.empty() && charset == "" && namesp == "" && import.empty() && csstokens.empty())
 	{
-		if(!settings["silent"]) cout << "Invalid CSS!" << endl;
-		return;
+		if(!settings["silent"]) cout << "Warning: empty CSS output!" << endl;
 	}
 
 	ofstream file_output;
