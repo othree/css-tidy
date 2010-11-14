@@ -1,22 +1,11 @@
-INSTALLING CSSTIDY
-~~~~~~~~~~~~~~~
+# CSSTidy
 
- - Requirements
+## Requirements
 
-   * Python, for SCons (http://www.python.org/)
-   * SCons (http://www.scons.org/)
-   * C++ compiler (g++ or MingW)
+   * [Python, for SCons](http://www.python.org/)
+   * [SCons](http://www.scons.org/)
+   * [C++ compiler](g++ or MinGW)
 
- - Compiling
+## Compiling
 
-   * Type 
-
-       scons 
-
-  - Problems
-
-    * Get help on the mailing list:
-        http://lists.sourceforge.net/lists/listinfo/csstidy-news
-
-    * Report bugs in the bug tracker:
-        http://sourceforge.net/tracker/?atid=771415&group_id=148404
+Type `scons`.
