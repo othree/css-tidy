@@ -7,10 +7,6 @@ INSTALLING CSSTIDY
    * SCons (http://www.scons.org/)
    * C++ compiler (g++ or MingW)
 
- - Optional Tools
-
-   * None at the moment.
-   
  - Compiling
 
    * Type 
