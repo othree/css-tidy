@@ -4,7 +4,7 @@ import glob
 
 #get all the build variables we need
 Import('env', 'project', 'mymode', 'debugcflags', 'releasecflags')
-localenv = env.Copy()
+localenv = env.Clone()
 
 buildroot = '../' + mymode  #holds the root of the build directory tree
 builddir = buildroot + '/' + project   #holds the build directory for this project
