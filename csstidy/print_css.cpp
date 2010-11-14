@@ -164,7 +164,7 @@ void csstidy::print_css(string filename)
 
             case VALUE:
                 *out << _htmlsp(csstokens[i].data, plain);
-                if(_seeknocomment(i, 1) == SEL_END && settings["remove_last_;"]) {
+                if(_seeknocomment(i, 1) == SEL_END && settings["remove_last_semicolon"]) {
                     *out << str_replace(";", "", csstemplate[6]);
                 } else {
                     *out << csstemplate[6];

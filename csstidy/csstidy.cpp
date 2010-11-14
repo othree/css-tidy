@@ -30,12 +30,12 @@ csstidy::csstidy()
 	tokens = "{};:()@='\"/,\\!$%&*+.<>?[]^`|~";
 	css_level = "CSS2.1";
 	
-	settings["remove_bslash"] = 1;
+	settings["remove_backslash"] = 1;
 	settings["compress_colors"] = 1;
 	settings["compress_font-weight"] = 1;
 	settings["lowercase_s"] = 0;
 	settings["optimise_shorthands"] = 1;
-	settings["remove_last_;"] = 0;
+	settings["remove_last_semicolon"] = 0;
 	settings["case_properties"] = 0;
 	settings["sort_properties"] = 0;
 	settings["sort_selectors"] = 0;
@@ -159,7 +159,7 @@ string csstidy::unicode(string& istring,int& i)
 		i--;
 	}
 	
-	if(add != "\\" || !settings["remove_bslash"] || in_str_array(tokens,istring[i+1]))
+	if(add != "\\" || !settings["remove_backslash"] || in_str_array(tokens,istring[i+1]))
 	{
 		return add;
 	}
