@@ -28,5 +28,4 @@ if localenv['PLATFORM'] == 'win32':
     resource = localenv.RES('win32_resource.rc')
     srclst.append(resource)
 
-
-localenv.Program(targetpath, source=srclst)
+localenv.Program(targetpath, source=srclst, LIBS=['boost_system-mt', 'boost_regex-mt', 'boost_filesystem-mt', 'boost_program_options-mt'])
