@@ -23,28 +23,11 @@ using namespace std;
 
 #include "prepare.hpp"
 
-#include "clpp/parser.hpp"
-
-void help() {
-    std::cout << "Some help info..." << std::endl;
-    ::exit( 0 );
-}
-
 map< string, vector<string> > predefined_templates;
 
 
 int main(int argc, char *argv[])
 {
-        clpp::command_line_parameters_parser parser;
-
-        parser.add_parameter("-h", "--help", help);
-
-        try {
-            parser.parse(argc, argv);
-            } catch (const std::exception& ex) {
-            std::cerr << ex.what() << std::endl;
-        }
-
 	prepare();
 	predefined_templates["high"].push_back("<span class=\"at\">");
 	predefined_templates["high"].push_back("</span> <span class=\"format\">{</span>\n");
@@ -155,15 +138,15 @@ int main(int argc, char *argv[])
 		}
 		
 		string css_file;
-                if(filein == "-") {
-                                string temp;
-                                do {
-                                        getline(cin, temp, '\n');
-                                        css_file += (temp + "\n");
-                                } while(cin);
-                        } else {
-                    css_file = file_get_contents(argv[1]);
-                }
+        if(filein == "-") {
+			string temp;
+			do {
+				getline(cin, temp, '\n');
+				css_file += (temp + "\n");
+			} while(cin);
+		} else {
+            css_file = file_get_contents(argv[1]);
+        }
 
 		csst.parse_css(css_file);
 		
