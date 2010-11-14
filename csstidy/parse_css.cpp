@@ -328,7 +328,7 @@ void csstidy::parse_css(string css_input)
 					}
 
 					// Compress font-weight (tiny compression)
-					if(cur_property == "font-weight" && settings["compress_font-weight"])
+					if(cur_property == "font-weight" && settings["compress_font_weight"])
 					{
 						int c_fw = c_font_weight(cur_value);
 						if(c_fw == 400)
